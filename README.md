@@ -25,23 +25,21 @@ preconfigured virtual machine.
 
 3. Start JupyterLab
 
-  1. Connect to the VM:
+    1. Connect to the VM:
+      ```
+      $ vagrant ssh
+      ```
 
-  ```
-  $ vagrant ssh
-  ```
+    2. Launch JupyterLab:
+      ```
+      $ cd iot-lab-training
+      $ ./bootstrap_jupyter.sh
+      ```
+      Keep this terminal opened during your training session.
 
-  2. Launch JupyterLab:
-
-  ```
-  $ cd iot-lab-training
-  $ ./bootstrap_jupyter.sh
-  ```
-  Keep this terminal opened during your training session.
-
-  3. Shift+click on the link returned by the previous script: `http://127.0.0.1:8888/?token=...`
+    3. Shift+click on the link returned by the previous script: `http://127.0.0.1:8888/?token=...`
   
-  4. In JupyterLab, click on the start.ipynb file
+    4. In JupyterLab, click on the start.ipynb file
 
 *Shutdown:*
   - Stop JupyterLab by pressing Ctrl + C keyboard shortcut twice
