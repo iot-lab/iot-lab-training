@@ -13,7 +13,7 @@ preconfigured virtual machine.
 1. Close this repository:
 
   ```
-  $ git clone https://github.com/iot-lab/iot-lab-training
+  $ git clone --recursive https://github.com/iot-lab/iot-lab-training
   ```
 
 2. Setup the virtual machine using [vagrant](https://www.vagrantup.com/downloads.html):
