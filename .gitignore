@@ -1,3 +1,4 @@
 .sudo_as_admin_successful
 .ipynb_checkpoints
 .vagrant
+bin/
