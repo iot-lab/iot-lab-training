@@ -2,16 +2,15 @@
 
 #include "shell.h"
 
-/* Include threads header and define required macros here */
+/* Include threads header and declare the thread stack */
 
-/* Implement thread functions here */
+/* Implement thread handler function here */
 
 int main(void)
 {
     /* Start new threads here */
-    
+
     /* Start the shell here */
-    char line_buf[SHELL_DEFAULT_BUFSIZE];
-    shell_run(NULL, line_buf, SHELL_DEFAULT_BUFSIZE);
+
     return 0;
 }
