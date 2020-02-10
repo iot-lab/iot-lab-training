@@ -2,3 +2,5 @@
 .ipynb_checkpoints
 .vagrant
 bin/
+build/
+*.iotlab
