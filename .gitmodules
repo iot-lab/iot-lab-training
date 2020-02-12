@@ -1,7 +1,7 @@
 [submodule "RIOT"]
 	path = riot/RIOT
 	url = https://github.com/riot-os/RIOT.git
-	branch = 2019-10-branch
+	branch = 2020-01-branch
 [submodule "iot-lab-contiki-ng"]
 	path = contiki-ng/iot-lab-contiki-ng
 	url = https://github.com/iot-lab/iot-lab-contiki-ng.git
