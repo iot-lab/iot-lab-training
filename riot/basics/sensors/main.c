@@ -13,7 +13,7 @@
 
 static char stack[THREAD_STACKSIZE_MAIN];
 
-void *thread_handler(void *arg)
+static void *thread_handler(void *arg)
 {
     (void)arg;
 
