@@ -13,7 +13,7 @@ static char buf_str[BUF_SIZE * 2] = { 0 };
 static uint8_t ctr_copy[16];
 
 
-/* Add here the buffers to store the SHA256 hash and its hexadecimal representation */
+/* Add here the key and the nonce */
 
 
 /* Implement the encrypt command handler here */
