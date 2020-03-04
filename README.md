@@ -20,7 +20,7 @@ preconfigured virtual machine.
 
   ```
   $ cd iot-lab-training
-  $ vagrant up --provision
+  $ IOTLAB_USER_NAME=<login> vagrant up (Replace <login> with your IoT-LAB login)
   ```
 
 3. Connect to JupyterLab at http://localhost:8888/?token=iotlab
