@@ -4,7 +4,7 @@
 
 $set_environment_variables = <<SCRIPT
 tee "/etc/profile.d/iotlab-env.sh" > "/dev/null" <<EOF
-IOTLAB_USER_NAME=#{ENV['IOTLAB_USER_NAME']}
+IOTLAB_LOGIN=#{ENV['IOTLAB_LOGIN']}
 EOF
 SCRIPT
 
