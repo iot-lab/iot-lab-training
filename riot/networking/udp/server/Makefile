@@ -25,3 +25,6 @@ DEVELHELP ?= 1
 CFLAGS += -DSERVER_PORT=$(SERVER_PORT)
 
 include $(RIOTBASE)/Makefile.include
+
+# Set a custom channel if needed
+include $(RIOTMAKE)/default-radio-settings.inc.mk

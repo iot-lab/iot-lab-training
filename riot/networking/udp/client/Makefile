@@ -24,3 +24,6 @@ CFLAGS += -DSERVER_PORT=$(SERVER_PORT)
 CFLAGS += -DSERVER_ADDR=\"$(SERVER_ADDR)\"
 
 include $(RIOTBASE)/Makefile.include
+
+# Set a custom channel if needed
+include $(RIOTMAKE)/default-radio-settings.inc.mk

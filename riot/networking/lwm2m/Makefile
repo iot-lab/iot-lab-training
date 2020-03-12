@@ -63,3 +63,6 @@ USEPKG += wakaama
 CFLAGS += -DLWM2M_CLIENT_MODE
 
 include $(RIOTBASE)/Makefile.include
+
+# Set a custom channel if needed
+include $(RIOTMAKE)/default-radio-settings.inc.mk
