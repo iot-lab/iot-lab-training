@@ -29,8 +29,8 @@
 #define ENABLE_DEBUG (0)
 #include "debug.h"
 
-static void _resp_handler(unsigned req_state, coap_pkt_t* pdu,
-                          sock_udp_ep_t *remote);
+static void _resp_handler(const gcoap_request_memo_t *memo, coap_pkt_t* pdu,
+                          const sock_udp_ep_t *remote);
 
 /* Retain request path to re-request if response includes block. User must not
  * start a new request (with a new path) until any blockwise transfer
@@ -44,16 +44,16 @@ static uint16_t req_count = 0;
 /*
  * Response callback.
  */
-static void _resp_handler(unsigned req_state, coap_pkt_t* pdu,
-                          sock_udp_ep_t *remote)
+static void _resp_handler(const gcoap_request_memo_t *memo, coap_pkt_t* pdu,
+                          const sock_udp_ep_t *remote)
 {
     (void)remote;       /* not interested in the source currently */
 
-    if (req_state == GCOAP_MEMO_TIMEOUT) {
+    if (memo->state == GCOAP_MEMO_TIMEOUT) {
         printf("gcoap: timeout for msg ID %02u\n", coap_get_id(pdu));
         return;
     }
-    else if (req_state == GCOAP_MEMO_ERR) {
+    else if (memo->state == GCOAP_MEMO_ERR) {
         printf("gcoap: error in response\n");
         return;
     }
@@ -104,7 +104,8 @@ static void _resp_handler(unsigned req_state, coap_pkt_t* pdu,
             block.blknum++;
             coap_opt_add_block2_control(pdu, &block);
             int len = coap_opt_finish(pdu, COAP_OPT_FINISH_NONE);
-            gcoap_req_send((uint8_t *)pdu->hdr, len, remote, _resp_handler);
+            gcoap_req_send((uint8_t *)pdu->hdr, len, remote,
+                           _resp_handler, memo->context);
         }
         else {
             puts("--- blockwise complete ---");
@@ -121,8 +122,8 @@ static size_t _send(uint8_t *buf, size_t len, char *addr_str, char *port_str)
     remote.family = AF_INET6;
 
     /* parse for interface */
-    int iface = ipv6_addr_split_iface(addr_str);
-    if (iface == -1) {
+    char *iface = ipv6_addr_split_iface(addr_str);
+    if (!iface) {
         if (gnrc_netif_numof() == 1) {
             /* assign the single interface found in gnrc_netif_numof() */
             remote.netif = (uint16_t)gnrc_netif_iter(NULL)->pid;
@@ -132,13 +133,13 @@ static size_t _send(uint8_t *buf, size_t len, char *addr_str, char *port_str)
         }
     }
     else {
-        if (gnrc_netif_get_by_pid(iface) == NULL) {
+        int pid = atoi(iface);
+        if (gnrc_netif_get_by_pid(pid) == NULL) {
             puts("gcoap_cli: interface not valid");
             return 0;
         }
-        remote.netif = iface;
+        remote.netif = pid;
     }
-
     /* parse destination address */
     if (ipv6_addr_from_str(&addr, addr_str) == NULL) {
         puts("gcoap_cli: unable to parse destination address");
@@ -157,7 +158,7 @@ static size_t _send(uint8_t *buf, size_t len, char *addr_str, char *port_str)
         return 0;
     }
 
-    bytes_sent = gcoap_req_send(buf, len, &remote, _resp_handler);
+    bytes_sent = gcoap_req_send(buf, len, &remote, _resp_handler, NULL);
     if (bytes_sent > 0) {
         req_count++;
     }
