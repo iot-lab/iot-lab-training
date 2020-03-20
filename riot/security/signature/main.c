@@ -3,11 +3,6 @@
 #include <string.h>
 
 /* Add required includes here */
-#include "shell.h"
-#include "fmt.h"
-#include "edsign.h"
-#include "ed25519.h"
-#include "random.h"
 
 
 /* Declare here the buffers where the asymmetric keys are stored */
