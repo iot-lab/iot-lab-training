@@ -34,11 +34,15 @@ static int _sign_handler(int argc, char **argv)
         return 1;
     }
 
+    /* Clear signature temporary buffer content */
+    memset(signature, 0, sizeof(signature));
+
     /* Generate the signature here */
 
 
+
     /* Convert the signature byte array to a string of hex characters */
-    
+
 
     /* Print the signature */
     printf("%s\n", signature_hex);
@@ -54,8 +58,11 @@ static int _verify_handler(int argc, char **argv)
         return 1;
     }
 
+    /* Clear signature temporary buffer content */
+    memset(signature, 0, sizeof(signature));
+
     /* Convert the input signature in hex to a byte array here */
-    fmt_hex_bytes(signature, argv[2]);
+
 
     /* Verify the signature here */
 
