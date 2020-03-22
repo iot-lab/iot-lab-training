@@ -16,11 +16,20 @@ preconfigured virtual machine.
   $ git clone --recursive https://github.com/iot-lab/iot-lab-training
   ```
 
-2. Setup the virtual machine using [vagrant](https://www.vagrantup.com/downloads.html):
+2. Setup your working environment. You have 2 choices:
+
+  1. Using the [vagrant](https://www.vagrantup.com/downloads.html) virtual machine:
 
   ```
   $ cd iot-lab-training
   $ IOTLAB_LOGIN=<login> vagrant up (Replace <login> with your IoT-LAB login)
+  ```
+
+  2. Using [Docker](https://www.docker.com/) (only tested on Linux)
+
+  ```
+  $ cd iot-lab-training
+  $ IOTLAB_LOGIN=<login> make run-docker
   ```
 
 3. Connect to JupyterLab at http://localhost:8888/?token=iotlab
