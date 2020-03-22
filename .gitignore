@@ -4,3 +4,9 @@
 bin/
 build/
 *.iotlab
+.bash*
+.iotlabrc
+.ssh/
+.ipython/
+.jupyter/
+.local/
