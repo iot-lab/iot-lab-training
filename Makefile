@@ -11,6 +11,7 @@ all:
 
 run-docker:
 	docker run --rm -it \
+		--security-opt seccomp=unconfined \
 		-e IOTLAB_LOGIN=$(IOTLAB_LOGIN) \
 		-e USER_ID=$$(id -u $(USER)) \
 		-v $(PWD):/shared \
