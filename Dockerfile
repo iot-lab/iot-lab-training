@@ -53,7 +53,7 @@ ENV PATH ${PATH}:/opt/gcc-arm-none-eabi-7-2018-q2-update/bin
 RUN pip3 install \
     cbor \
     ed25519 \
-    iotlabcli==3.1.0 \
+    iotlabcli==3.1.1 \
     iotlabwscli==0.2.0 \
     jupyterlab==2.0.1
 
