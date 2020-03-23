@@ -21,7 +21,9 @@ static int _key_handler(int argc, char **argv)
     /* Create the new keypair */
 
 
-    puts("New keys generated!");
+
+    /* Print the new keypair */
+
 
     return 0;
 }
