@@ -11,8 +11,6 @@ extern int _gnrc_netif_config(int argc, char **argv);
 
 static char server_buffer[128];
 
-#define SERVER_MESSAGE "Hello client"
-
 int main(void)
 {
     /* print network addresses */
@@ -27,7 +25,7 @@ int main(void)
     /* Bind the socket to the local address */
 
     while (1) {
-        /* Wait for incoming messages, if a message is received, reply SERVER_MESSAGE */
+        /* Wait for incoming messages, if a message is received */
     }
 
     return 0;
