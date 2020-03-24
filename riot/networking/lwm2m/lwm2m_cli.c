@@ -31,8 +31,15 @@
 /* Include temperature object headers */
 
 
+/* Declare lpsxxx_t sensor variable (globally) */
+
+
 /* Define number of LwM2M objects */
 #define OBJ_COUNT (3)
+
+
+/* Declare LwM2M temperature object instance */
+
 
 /* Define temperature sensor read interval (seconds) */
 
@@ -42,24 +49,20 @@
  */
 
 
-/* Declare thread stack size. */ 
+/* Declare thread stack size. */
+
 
 
 uint8_t connected = 0;
 lwm2m_object_t *obj_list[OBJ_COUNT];
 static lwm2m_client_data_t client_data;
 
-/* Declare lpsxxx_t sensor variable (globally) */
-
-
-/* Declare LwM2M temperature object instance */
-
-
 
 /* 
  * Read temperature sensor method.
  * Update LwM2M temperature object instance and notify observers.
  */
+
 
 
 void lwm2m_cli_init(void)
@@ -71,6 +74,7 @@ void lwm2m_cli_init(void)
     obj_list[0] = lwm2m_client_get_security_object(&client_data);
     obj_list[1] = lwm2m_client_get_server_object(&client_data);
     obj_list[2] = lwm2m_client_get_device_object(&client_data);
+
     /* add temperature object */
 
 
@@ -90,13 +94,14 @@ int lwm2m_cli_cmd(int argc, char **argv)
         if (!connected && lwm2m_client_run(&client_data, obj_list, OBJ_COUNT)) {
             connected = 1;
 
-	    /* Initialize and enable the lps331ap device */
+            /* Initialize and enable the lps331ap device */
 
 
             /* Get temperature object instance */
 
 
-	    /* Create temperature sensor reader thread */ 
+            /* Create temperature sensor reader thread */
+
 
         }
         return 0;
