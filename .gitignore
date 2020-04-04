@@ -10,3 +10,5 @@ build/
 .ipython/
 .jupyter/
 .local/
+*.oml
+.cache/
