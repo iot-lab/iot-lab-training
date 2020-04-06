@@ -14,7 +14,7 @@ run-docker:
 		--security-opt seccomp=unconfined \
 		-e IOTLAB_LOGIN=$(IOTLAB_LOGIN) \
 		-e USER_ID=$$(id -u $(USER)) \
-		-v $(PWD):/shared \
+		-v $(PWD):/home/jovyan \
 		-p 8888:8888 \
 		--name iot-lab-training \
 		aabadie/iot-lab-training

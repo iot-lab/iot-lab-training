@@ -2,13 +2,12 @@
 
 : ${USER_ID:1000}
 
-HOME=/shared
-USER_NAME=user
+USERNAME=jovyan
+HOME=/home/${USERNAME}
 
-groupadd -g ${USER_ID} ${USER_NAME}
-useradd --shell /bin/bash -u ${USER_ID} -o -c "" -d ${HOME} -m ${USER_NAME} -g ${USER_ID}
-chown -R ${USER_ID}:${USER_ID} /shared
+usermod -u ${USER_ID} ${USERNAME}
+chown -R ${USER_ID}:${USER_ID} ${HOME}
 
 export HOME
 
-exec /usr/local/bin/gosu user /bin/bash "$@"
+exec /usr/local/bin/gosu ${USERNAME} /bin/bash "$@"
