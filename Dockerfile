@@ -58,7 +58,7 @@ RUN python3 -m pip install --no-cache \
     azure-iot-device==2.1.1 \
     cbor==1.0.0 \
     ed25519==1.5 \
-    iotlabcli==3.1.1 \
+    iotlabcli==3.2.0 \
     iotlabwscli==0.2.0 \
     ipympl==0.5.6 \
     ipywidgets==7.5.1 \
@@ -73,9 +73,6 @@ RUN python3 -m pip install --no-cache \
     seaborn==0.10.0 \
     scikit-learn==0.22.2 \
     scipy==1.4.1
-
-# IoT-LAB CLI Tools
-RUN python3 -m pip install -U --no-cache git+https://github.com/aabadie/cli-tools.git@ssh_key
 
 # IoT-LAB Plot OML tools
 RUN python3 -m pip install -U --no-cache git+https://github.com/iot-lab/oml-plot-tools.git@0.7.0
