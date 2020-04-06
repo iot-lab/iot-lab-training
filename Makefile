@@ -16,4 +16,5 @@ run-docker:
 		-e USER_ID=$$(id -u $(USER)) \
 		-v $(PWD):/shared \
 		-p 8888:8888 \
+		--name iot-lab-training \
 		aabadie/iot-lab-training
