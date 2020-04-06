@@ -11,12 +11,17 @@ RUN apt-get update && \
         curl \
         git \
         g++-multilib \
+        iproute2 \
+        mosquitto-clients \
+        net-tools \
         openssh-client \
         python3-dev \
         python3-pip \
         python3-setuptools \
         python3-wheel \
+        socat \
         unzip \
+        vim \
         wget \
         xxd \
         && \
@@ -33,8 +38,8 @@ RUN export KEY=B42F6819007F00F88E364FD4036A9C25BF357DD4; \
         gpg --batch --keyserver "$server" --recv-keys $KEY && break || : ; \
     done;
 
-RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" \
-    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture).asc" \
+RUN curl -L -o /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" \
+    && curl -L -o /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture).asc" \
     && gpg --verify /usr/local/bin/gosu.asc \
     && rm /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu
@@ -50,12 +55,33 @@ RUN mkdir -p /opt && \
 ENV PATH ${PATH}:/opt/gcc-arm-none-eabi-7-2018-q2-update/bin
 
 # Python packages
-RUN pip3 install \
-    cbor \
-    ed25519 \
+RUN python3 -m pip install --no-cache \
+    aiocoap==0.3 \
+    asynchttp==0.0.4 \
+    asyncssh==2.2.0 \
+    azure-iot-device==2.1.1 \
+    cbor==1.0.0 \
+    ed25519==1.5 \
     iotlabcli==3.1.1 \
     iotlabwscli==0.2.0 \
-    jupyterlab==2.0.1
+    ipywidgets==7.5.1 \
+    jupyterlab==2.0.1 \
+    matplotlib==3.2.1 \
+    numpy==1.18.2 \
+    paho-mqtt==1.5.0 \
+    pandas==1.0.3 \
+    pycayennelpp==1.3.0 \
+    python-cayennelpp==0.0.4 \
+    scapy==2.4.3 \
+    seaborn==0.10.0 \
+    scikit-learn==0.22.2 \
+    scipy==1.4.1
+
+# IoT-LAB CLI Tools
+RUN python3 -m pip install -U --no-cache git+https://github.com/aabadie/cli-tools.git@ssh_key
+
+# IoT-LAB Plot OML tools
+RUN python3 -m pip install -U --no-cache git+https://github.com/iot-lab/oml-plot-tools.git@0.7.0
 
 ADD bootstrap_jupyter.sh /bootstrap_jupyter.sh
 RUN chmod +x /bootstrap_jupyter.sh
