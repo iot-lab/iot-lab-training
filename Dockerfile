@@ -1,13 +1,14 @@
-FROM ubuntu:18.04
+FROM jupyter/base-notebook:python-3.7.6
 
 LABEL maintainer="alexandre.abadie@inria.fr"
+
+USER root
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         add-apt-key \
         bsdmainutils \
         build-essential \
-        ca-certificates \
         curl \
         git \
         g++-multilib \
@@ -15,14 +16,9 @@ RUN apt-get update && \
         mosquitto-clients \
         net-tools \
         openssh-client \
-        python3-dev \
-        python3-pip \
-        python3-setuptools \
-        python3-wheel \
         socat \
         unzip \
         vim \
-        wget \
         xxd \
         && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -64,6 +60,7 @@ RUN python3 -m pip install --no-cache \
     ed25519==1.5 \
     iotlabcli==3.1.1 \
     iotlabwscli==0.2.0 \
+    ipympl==0.5.6 \
     ipywidgets==7.5.1 \
     jupyterlab==2.0.1 \
     matplotlib==3.2.1 \
@@ -82,6 +79,12 @@ RUN python3 -m pip install -U --no-cache git+https://github.com/aabadie/cli-tool
 
 # IoT-LAB Plot OML tools
 RUN python3 -m pip install -U --no-cache git+https://github.com/iot-lab/oml-plot-tools.git@0.7.0
+
+# Add Jupyterlab interactive extensions
+RUN conda install -c conda-forge nodejs
+RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
+RUN jupyter labextension install jupyter-matplotlib
+RUN jupyter nbextension enable --py widgetsnbextension
 
 ADD bootstrap_jupyter.sh /bootstrap_jupyter.sh
 RUN chmod +x /bootstrap_jupyter.sh
