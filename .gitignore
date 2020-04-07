@@ -12,3 +12,4 @@ build/
 .local/
 *.oml
 .cache/
+.node_repl_history
