@@ -17,4 +17,4 @@ run-docker:
 		-v $(PWD):/home/jovyan \
 		-p 8888:8888 \
 		--name iot-lab-training \
-		aabadie/iot-lab-training
+		fitiotlab/iot-lab-training
