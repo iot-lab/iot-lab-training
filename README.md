@@ -10,7 +10,7 @@ preconfigured virtual machine.
 
 ### Setup
 
-1. Close this repository:
+1. Clone this repository:
 
   ```
   $ git clone --recursive https://github.com/iot-lab/iot-lab-training
