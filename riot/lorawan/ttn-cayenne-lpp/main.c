@@ -8,7 +8,7 @@
 
 #include "board.h"
 
-/* TODO: Add the cayenne_lpp header */
+/* TODO: Add the cayenne_lpp header here */
 
 
 /* Declare globally the loramac descriptor */
@@ -17,7 +17,7 @@ static semtech_loramac_t loramac;
 /* Declare globally the sensor device descriptor */
 static hts221_t hts221;
 
-/* TODO: Declare globally Cayenne LPP descriptor */
+/* TODO: Declare globally Cayenne LPP descriptor here */
 
 
 /* Device and application informations required for OTAA activation */
@@ -41,7 +41,7 @@ static void sender(void)
             puts(" -- failed to read temperature!");
         }
 
-        /* TODO: prepare cayenne lpp payload */
+        /* TODO: prepare cayenne lpp payload here */
 
 
         printf("Sending LPP data\n");
@@ -52,7 +52,7 @@ static void sender(void)
             printf("Cannot send lpp message, ret code: %d\n", ret);
         }
 
-        /* TODO: clear buffer once done */
+        /* TODO: clear buffer once done here */
     }
 
     /* this should never be reached */
@@ -94,7 +94,7 @@ int main(void)
 
     puts("Join procedure succeeded");
 
-    /* call the sender */
+    /* call the sender function */
     sender();
 
     return 0;
