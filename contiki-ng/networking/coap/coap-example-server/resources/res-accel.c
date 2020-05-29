@@ -1,0 +1,5 @@
+/**
+ * \file
+ *      Accelerometer resource example
+ */
+

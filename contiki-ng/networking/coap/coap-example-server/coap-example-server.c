@@ -80,6 +80,9 @@ extern coap_resource_t res_battery;
 #include "dev/temperature-sensor.h"
 extern coap_resource_t res_temperature;
 #endif
+/* Declare accelerometer resource */
+
+
 
 PROCESS(er_example_server, "Erbium Example Server");
 AUTOSTART_PROCESSES(&er_example_server);
@@ -123,6 +126,9 @@ PROCESS_THREAD(er_example_server, ev, data)
   coap_activate_resource(&res_temperature, "sensors/temperature");
   SENSORS_ACTIVATE(temperature_sensor);
 #endif
+/* Activate accelerometer resource */
+
+
 
   /* Define application-specific events here. */
   while(1) {
