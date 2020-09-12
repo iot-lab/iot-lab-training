@@ -2,13 +2,30 @@
 
 ### Description
 
-This repository contains training resources to easily start using the IoT-LAB
-testbed.
+This repository contains the Jupyter Notebooks available at
+https://labs.iot-lab.info and used ad training resources to easily start using
+the IoT-LAB testbed.
 
-The training resources are based on Jupyter notebooks that are run in a
-preconfigured virtual machine.
+### Getting started
 
-### Setup
+We recommend that you follow the `start.ipynb` notebook to learn how to use
+Jupyter Notebooks.
+
+- Notebooks in **riot** will let you discover the [RIOT](https://riot-os.org)
+  operating system:
+  - **riot/basics** contains exercises on basics features of RIOT
+  - **riot/networking** contains networking exercises (802.15.4, IPv6, UDP, CoAP
+    and LwM2M)
+  - **riot/lorawan** contains exercises on LoRaWAN LPWAN networks
+  - **riot/security** contains exercises on security aspects for IoT (hash,
+    crypto, DTLS and OTA)
+- Notebooks in **contiki-ng** contains exercises to discover the
+  [Contiki-NG](https://www.contiki-ng.org/) operating system
+- Notebooks in **testbed** shows advanced features of the IoT-LAB testbed:
+  - for measuring power consumption on IoT-LAB M3 devices
+  - for sniffing radio paquets between IoT-LAB M3 devices
+
+### Contribute
 
 1. Clone this repository:
 
@@ -16,16 +33,8 @@ preconfigured virtual machine.
   $ git clone --recursive https://github.com/iot-lab/iot-lab-training
   ```
 
-2. Setup your working environment. You have 2 choices:
-
-  1. Using the [vagrant](https://www.vagrantup.com/downloads.html) virtual machine:
-
-  ```
-  $ cd iot-lab-training
-  $ IOTLAB_LOGIN=<login> vagrant up (Replace <login> with your IoT-LAB login)
-  ```
-
-  2. Using [Docker](https://www.docker.com/) (only tested on Linux)
+2. Start a local Jupyterlab server using [Docker](https://www.docker.com/)
+  (only tested on Linux and OSX)
 
   ```
   $ cd iot-lab-training
@@ -33,10 +42,6 @@ preconfigured virtual machine.
   ```
 
 3. Connect to JupyterLab at http://localhost:8888/?token=iotlab
-  
-4. In JupyterLab, click on the start.ipynb file
 
-*Graceful shutdown of the VM:*
-```
-$ vagrant halt
-```
+You can then edit the notebooks in your browser. Make sure to clear all the
+outputs before commiting your changes.
