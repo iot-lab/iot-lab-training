@@ -1,0 +1,9 @@
+USEMODULE += xtimer
+# configure and use Nimble
+USEPKG += nimble
+USEMODULE += nimble_scanner
+USEMODULE += nimble_scanlist  
+USEMODULE += nimble_svc_gap
+USEMODULE += nimble_autoadv
+CFLAGS += -DNIMBLE_AUTOADV_START_MANUALLY=1
+CFLAGS += -DNIMBLE_AUTOADV_DEVICE_NAME=NULL
