@@ -1,6 +1,6 @@
 APPLICATION = uart
 
-BOARD ?= native
+BOARD ?= iotlab-m3
 
 # Add the required UART feature module here
 
