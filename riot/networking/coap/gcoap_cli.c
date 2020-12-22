@@ -96,7 +96,7 @@ static void _resp_handler(const gcoap_request_memo_t *memo, coap_pkt_t* pdu,
                 return;
             }
 
-            gcoap_req_init(pdu, (uint8_t *)pdu->hdr, GCOAP_PDU_BUF_SIZE,
+            gcoap_req_init(pdu, (uint8_t *)pdu->hdr, CONFIG_GCOAP_PDU_BUF_SIZE,
                            COAP_METHOD_GET, _last_req_path);
             if (msg_type == COAP_TYPE_ACK) {
                 coap_hdr_set_type(pdu->hdr, COAP_TYPE_CON);
@@ -169,7 +169,7 @@ int gcoap_cli_cmd(int argc, char **argv)
 {
     /* Ordered like the RFC method code numbers, but off by 1. GET is code 0. */
     char *method_codes[] = {"get", "post", "put"};
-    uint8_t buf[GCOAP_PDU_BUF_SIZE];
+    uint8_t buf[CONFIG_GCOAP_PDU_BUF_SIZE];
     coap_pkt_t pdu;
     size_t len;
 
@@ -179,7 +179,7 @@ int gcoap_cli_cmd(int argc, char **argv)
     }
 
     if (strcmp(argv[1], "info") == 0) {
-        printf("CoAP server is listening on port %u\n", GCOAP_PORT);
+        printf("CoAP server is listening on port %u\n", CONFIG_GCOAP_PORT);
         return 0;
     }
 
@@ -209,7 +209,7 @@ int gcoap_cli_cmd(int argc, char **argv)
      */
     if (((argc == apos + 3) && (code_pos == 0)) ||
         ((argc == apos + 4) && (code_pos != 0))) {
-        gcoap_req_init(&pdu, &buf[0], GCOAP_PDU_BUF_SIZE, code_pos+1, argv[apos+2]);
+        gcoap_req_init(&pdu, &buf[0], CONFIG_GCOAP_PDU_BUF_SIZE, code_pos+1, argv[apos+2]);
         coap_hdr_set_type(pdu.hdr, msg_type);
 
         memset(_last_req_path, 0, _LAST_REQ_PATH_MAX);

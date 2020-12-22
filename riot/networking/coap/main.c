@@ -22,7 +22,6 @@
 #include "msg.h"
 
 #include "net/gcoap.h"
-#include "kernel_types.h"
 #include "shell.h"
 #include "fmt.h"
 /* Include lpsxxx headers */
@@ -101,6 +100,7 @@ static gcoap_listener_t _listener = {
     &_resources[0],
     ARRAY_SIZE(_resources),
     _encode_link,
+    NULL,
     NULL
 };
 
