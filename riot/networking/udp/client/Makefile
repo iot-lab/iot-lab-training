@@ -1,6 +1,6 @@
 APPLICATION = posix_client
 
-BOARD ?= native
+BOARD ?= iotlab-m3
 
 RIOTBASE ?= $(CURDIR)/../../../RIOT
 
