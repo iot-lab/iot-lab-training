@@ -34,33 +34,33 @@ DEVELHELP ?= 1
 SERVER_ADDR ?= fd00:dead:beef::1
 
 ifneq (,$(SERVER_ADDR))
-  CFLAGS += -DLWM2M_SERVER_URI=\"coap://[$(SERVER_ADDR)]\"
+  CFLAGS += -DCONFIG_LWM2M_SERVER_URI=\"coap://[$(SERVER_ADDR)]\"
 endif
 
 # Specify the device name
 DEVICE_NAME ?= testRIOTDevice
 
 ifneq (,$(DEVICE_NAME))
-  CFLAGS += -DLWM2M_DEVICE_NAME=\"$(DEVICE_NAME)\"
+  CFLAGS += -DCONFIG_LWM2M_DEVICE_NAME=\"$(DEVICE_NAME)\"
 endif
 
 # Specify the device manufacturer
 DEVICE_MANUFACTURER ?= Iot-LAB
 
 ifneq (,$(DEVICE_NAME))
-  CFLAGS += -DLWM2M_DEVICE_MANUFACTURER=\"$(DEVICE_MANUFACTURER)\"
+  CFLAGS += -DCONFIG_LWM2M_DEVICE_MANUFACTURER=\"$(DEVICE_MANUFACTURER)\"
 endif
 
 # NOTE: Add the package for wakaama
 USEPKG += wakaama
 # Uncomment to enable Wakaama debug log
-#CFLAGS += -DLWM2M_WITH_LOGS
+#CFLAGS += -DCONFIG_LWM2M_WITH_LOGS
 
 # Uncomment to indicate that the server is a LwM2M bootstrap server
-# CFLAGS += -DLWM2M_BOOTSTRAP=1
+# CFLAGS += -DCONFIG_LWM2M_BOOTSTRAP=1
 
 # NOTE: Use wakaama in client mode
-CFLAGS += -DLWM2M_CLIENT_MODE
+CFLAGS += -DCONFIG_LWM2M_CLIENT_MODE
 
 include $(RIOTBASE)/Makefile.include
 
