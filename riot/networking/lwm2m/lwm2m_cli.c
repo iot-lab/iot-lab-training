@@ -59,7 +59,7 @@ static lwm2m_client_data_t client_data;
 
 
 /* 
- * Read temperature sensor method.
+ * Thread that reads the temperature.
  * Update LwM2M temperature object instance and notify observers.
  */
 
