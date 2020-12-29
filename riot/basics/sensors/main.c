@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "thread.h"
+#include "timex.h"
 #include "xtimer.h"
 #include "shell.h"
 
@@ -20,11 +21,11 @@
 /* Declare the lsm303dlhc device variable here */
 
 
+/* Declare and initialize the lsm303dlhc thread lock here */
+
+
 /* stack memory allocated for the lsm303dlhc thread */
 static char lsm303dlhc_stack[THREAD_STACKSIZE_MAIN];
-/* mutex used to synchronize the main thread (shell) and the lsm303dlhc thread */
-static mutex_t lsm_lock;
-
 
 static void *lsm303dlhc_thread(void *arg)
 {
@@ -40,7 +41,7 @@ static void *lsm303dlhc_thread(void *arg)
         /* Release the mutex here */
 
 
-        xtimer_usleep(delay_ms);
+        xtimer_usleep(500 * US_PER_MS);
     }
 
     return 0;
@@ -56,13 +57,6 @@ static int lsm303dlhc_handler(int argc, char *argv[])
     if (argc < 2) {
         _lsm303dlhc_usage(argv[0]);
         return -1;
-    }
-
-    if (argc == 3) {
-        delay_ms = atoi(argv[2]) * US_PER_MS;
-    }
-    else {
-        delay_ms = 500 * US_PER_MS;
     }
 
     /* Implement the lsm303dlhc start/stop subcommands here */
@@ -99,11 +93,6 @@ static const shell_command_t commands[] = {
 
 int main(void)
 {
-    /* The accelerometer is locked here to make sure the accelerometer
-     *  thread is blocked at startup and no accelometer/magnetometer values 
-     *  are read if not requested to. */
-    mutex_lock(&lsm_lock);
-
     /* Initialize the lps331ap sensor here */
 
 
