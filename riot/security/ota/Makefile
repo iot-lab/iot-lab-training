@@ -7,9 +7,6 @@ BOARD ?= iotlab-m3
 # This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../../RIOT
 
-# lower pktbuf size to something sufficient for this application
-CFLAGS += -DGNRC_PKTBUF_SIZE=2000
-
 #
 # Networking
 #
@@ -22,8 +19,7 @@ CFLAGS += -DGNRC_PKTBUF_SIZE=2000
 USEMODULE += auto_init_gnrc_netif
 # Specify the mandatory networking modules for IPv6 and UDP
 USEMODULE += gnrc_ipv6_router_default
-USEMODULE += gnrc_udp
-USEMODULE += gnrc_sock_udp
+USEMODULE += sock_udp
 # Additional networking modules that can be dropped if not needed
 USEMODULE += gnrc_icmpv6_echo
 
@@ -44,10 +40,7 @@ QUIET ?= 1
 #
 
 USEMODULE += nanocoap_sock sock_util
-USEMODULE += suit suit_coap
-
-# SUIT draft v4 support:
-USEMODULE += suit_v4
+USEMODULE += suit suit_transport_coap suit_storage_flashwrite
 
 # Display a progress bar during firmware download
 USEMODULE += progress_bar
@@ -58,11 +51,13 @@ FEATURES_OPTIONAL += periph_gpio_irq
 # Default COAP manifest resource location when fetched through gpio trigger
 CFLAGS += -DSUIT_MANIFEST_RESOURCE=\"$(SUIT_COAP_ROOT)/$(SUIT_NOTIFY_MANIFEST)\"
 
+# Enable test_utils_interactive_sync, only used when running automatic test
+DEFAULT_MODULE += test_utils_interactive_sync
+
 # Change this to 0 to not use ethos
 USE_ETHOS ?= 1
 
 ifeq (1,$(USE_ETHOS))
-  GNRC_NETIF_NUMOF := 2
   USEMODULE += stdio_ethos
   USEMODULE += gnrc_uhcpc
 
@@ -97,11 +92,21 @@ TEST_EXTRA_FILES += $(SLOT_RIOT_ELFS) $(SUIT_SEC) $(SUIT_PUB)
 # a terminal is opened to synchronize.
 TESTRUNNER_RESET_AFTER_TERM ?= 1
 
+# This can be removed as soon as the Pi-fleet runners support an Openssl version
+# with ed25519 support.
+TEST_ON_CI_BLACKLIST = all
+
 include $(RIOTBASE)/Makefile.include
+
+# lower pktbuf size to something sufficient for this application
+# Set GNRC_PKTBUF_SIZE via CFLAGS if not being set via Kconfig.
+ifndef CONFIG_GNRC_PKTBUF_SIZE
+  CFLAGS += -DCONFIG_GNRC_PKTBUF_SIZE=2000
+endif
 
 .PHONY: host-tools
 
 host-tools:
-	$(Q)env -u CC -u CFLAGS make -C $(RIOTTOOLS)
+	$(Q)env -u CC -u CFLAGS $(MAKE) -C $(RIOTTOOLS)
 
 include $(RIOTMAKE)/default-radio-settings.inc.mk
