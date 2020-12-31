@@ -21,7 +21,6 @@ static int _key_handler(int argc, char **argv)
     /* Create the new keypair */
 
 
-
     /* Print the new keypair */
 
 
@@ -40,7 +39,6 @@ static int _sign_handler(int argc, char **argv)
     memset(signature, 0, sizeof(signature));
 
     /* Generate the signature here */
-
 
 
     /* Convert the signature byte array to a string of hex characters */
