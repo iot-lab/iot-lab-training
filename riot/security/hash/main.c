@@ -24,6 +24,7 @@ static int _sha256_handler(int argc, char **argv)
 
     /* Convert the hash array to a string of hex characters */
 
+
     /* Print the hash */
     printf("SHA256: %s\n", sha256_hash_hex);
 
@@ -41,7 +42,9 @@ static int _sha3_handler(int argc, char **argv)
 
     /* Compute the hash here */
 
+
     /* Convert the hash array to a string in hex format */
+
 
     /* Print the hash */
     printf("SHA3: %s\n", sha3_hash_hex);
