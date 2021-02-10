@@ -14,7 +14,7 @@ static char server_buffer[128];
 int main(void)
 {
     /* print network addresses */
-    xtimer_sleep(3);
+    xtimer_sleep(5);
     puts("Configured network interfaces:");
     _gnrc_netif_config(0, NULL);
 
