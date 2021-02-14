@@ -84,9 +84,11 @@ static int lpsxxx_handler(int argc, char *argv[])
 }
 
 static const shell_command_t commands[] = {
+    /* lsm303dlhc shell command handler */
+    { "lsm", "start/stop reading accelerometer values", lsm303dlhc_handler },
+
     /* Add the lps331ap command description here */
 
-    /* Add the lsm303dlhc command description here */
 
     { NULL, NULL, NULL}
 };
