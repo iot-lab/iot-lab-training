@@ -1,5 +1,7 @@
 #include <string.h>
 
+#include "xtimer.h"
+
 #include "net/loramac.h"
 #include "semtech_loramac.h"
 
