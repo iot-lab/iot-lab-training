@@ -2,7 +2,7 @@
 APPLICATION = ble_scan_rss
 
 # If no BOARD is found in the environment, use this default:
-BOARD ?= dwm1001
+BOARD ?= nrf52dk
 
 # This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../../RIOT
