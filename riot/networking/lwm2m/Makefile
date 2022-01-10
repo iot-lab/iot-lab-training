@@ -9,7 +9,7 @@ RIOTBASE ?= $(CURDIR)/../../RIOT
 
 # Include packages that pull up and auto-init the link layer.
 # NOTE: 6LoWPAN will be included if IEEE802.15.4 devices are present
-USEMODULE += gnrc_netdev_default
+USEMODULE += netdev_default
 USEMODULE += auto_init_gnrc_netif
 # Specify the mandatory networking modules
 USEMODULE += gnrc_ipv6_router_default
@@ -20,7 +20,7 @@ USEMODULE += gnrc_icmpv6_echo
 USEMODULE += shell
 USEMODULE += shell_commands
 USEMODULE += ps
-USEMODULE += xtimer
+USEMODULE += ztimer_msec
 
 # Import lps331ap driver module
 
@@ -63,6 +63,9 @@ USEPKG += wakaama
 CFLAGS += -DCONFIG_LWM2M_CLIENT_MODE
 
 include $(RIOTBASE)/Makefile.include
+
+# Disable cast-align error
+CFLAGS += -Wno-cast-align
 
 # Set a custom channel if needed
 include $(RIOTMAKE)/default-radio-settings.inc.mk

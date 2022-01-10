@@ -6,6 +6,9 @@ RIOTBASE ?= $(CURDIR)/../../../RIOT
 
 SERVER_PORT ?= 8888
 
+# Import ztimer module
+USEMODULE += ztimer_msec
+
 # Import radio driver module
 USEMODULE += gnrc_netdev_default
 USEMODULE += auto_init_gnrc_netif

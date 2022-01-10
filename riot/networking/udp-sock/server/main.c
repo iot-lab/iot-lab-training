@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-#include "xtimer.h"
+#include "ztimer.h"
 #include "shell.h"
 
 /* Add the sock udp header include here */
@@ -15,7 +15,7 @@ uint8_t buf[128];
 int main(void)
 {
     /* print network addresses */
-    xtimer_sleep(5);
+    ztimer_sleep(ZTIMER_MSEC, 5 * MS_PER_SEC);
     puts("Configured network interfaces:");
     _gnrc_netif_config(0, NULL);
 

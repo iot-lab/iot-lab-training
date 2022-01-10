@@ -18,7 +18,8 @@
  */
 
 #include "thread.h"
-#include "xtimer.h"
+#include "timex.h"
+#include "ztimer.h"
 #include "kernel_defines.h"
 
 #include "lwm2m_client.h"

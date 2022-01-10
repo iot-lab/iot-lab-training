@@ -2,7 +2,8 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include "xtimer.h"
+#include "timex.h"
+#include "ztimer.h"
 
 #include "shell.h"
 
@@ -14,7 +15,7 @@ static char server_buffer[128];
 int main(void)
 {
     /* print network addresses */
-    xtimer_sleep(5);
+    ztimer_sleep(ZTIMER_MSEC, 5 * MS_PER_SEC);
     puts("Configured network interfaces:");
     _gnrc_netif_config(0, NULL);
 

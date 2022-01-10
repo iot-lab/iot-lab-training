@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "xtimer.h"
+#include "ztimer.h"
 
 #include "net/af.h"
 #include "net/protnum.h"
@@ -42,7 +42,7 @@ int main(void)
             puts("\"");
         }
 
-        xtimer_sleep(1);
+        ztimer_sleep(ZTIMER_MSEC, 1 * MS_PER_SEC);
     }
     return 0;
 }
