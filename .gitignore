@@ -13,3 +13,5 @@ build/
 *.oml
 .cache/
 .node_repl_history
+.config/
+.npm/
