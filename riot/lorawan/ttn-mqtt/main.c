@@ -1,7 +1,8 @@
 #include <string.h>
 
 #include "board.h"
-#include "xtimer.h"
+#include "timex.h"
+#include "ztimer.h"
 
 #include "net/loramac.h"     /* core loramac definitions */
 #include "semtech_loramac.h" /* package API */
@@ -84,7 +85,7 @@ int main(void)
         }
 
         /* wait 30 seconds between each message */
-        xtimer_sleep(30);
+        ztimer_sleep(ZTIMER_MSEC, 30 * MS_PER_SEC);
     }
 
     return 0; /* should never be reached */

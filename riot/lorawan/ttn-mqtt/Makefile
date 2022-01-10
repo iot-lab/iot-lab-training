@@ -9,7 +9,7 @@ RIOTBASE ?= $(CURDIR)/../../RIOT
 #
 # Here we add the modules that are needed
 #
-USEMODULE += xtimer
+USEMODULE += ztimer_msec
 USEMODULE += hts221
 
 

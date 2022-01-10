@@ -1,7 +1,8 @@
 #include <string.h>
 
 #include "board.h"
-#include "xtimer.h"
+#include "timex.h"
+#include "ztimer.h"
 
 /* Add necessary include here */
 
@@ -36,7 +37,7 @@ int main(void)
 
 
         /* wait 20 seconds between each message */
-        xtimer_sleep(20);
+        ztimer_sleep(ZTIMER_MSEC, 20 * MS_PER_SEC);
     }
 
     return 0; /* should never be reached */
