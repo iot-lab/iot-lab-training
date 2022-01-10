@@ -11,8 +11,8 @@ RIOTBASE ?= $(CURDIR)/../../RIOT
 USEMODULE += shell
 
 # ble rss json scan module
-EXTERNAL_MODULE_DIRS += $(CURDIR)/ble_rss_scan
-USEMODULE += ble_scan_rss
+USEMODULE += ble_rss_scan
+EXTERNAL_MODULE_DIRS += $(CURDIR)/external_modules
 
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the

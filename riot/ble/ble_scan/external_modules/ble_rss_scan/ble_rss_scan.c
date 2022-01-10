@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "xtimer.h"
+#include "ztimer.h"
 
 #include "nimble_scanner.h"
 #include "nimble_scanlist.h"
@@ -47,7 +47,7 @@ void ble_rss_scan(uint32_t scan_time_out, uint16_t scan_cycles,
     for (int i = 0; i < scan_cycles; i++) {
         nimble_scanlist_clear();
         nimble_scanner_start();
-        xtimer_usleep(scan_time_out);
+        ztimer_sleep(ZTIMER_USEC, scan_time_out);
         nimble_scanner_stop();
         if (output_format == BLE_SCAN_JSON_OUTPUT) {
             _scanlist_json_print();
