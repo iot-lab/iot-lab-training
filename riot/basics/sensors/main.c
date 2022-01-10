@@ -3,8 +3,7 @@
 #include <string.h>
 
 #include "thread.h"
-#include "timex.h"
-#include "xtimer.h"
+#include "ztimer.h"
 #include "shell.h"
 
 #include "mutex.h"
@@ -41,7 +40,7 @@ static void *lsm303dlhc_thread(void *arg)
         /* Release the mutex here */
 
 
-        xtimer_usleep(500 * US_PER_MS);
+        ztimer_sleep(ZTIMER_MSEC, 500);
     }
 
     return 0;

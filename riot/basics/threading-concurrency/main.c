@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "thread.h"
-#include "xtimer.h"
+#include "ztimer.h"
 
 /* Include the mutex header here */
 
@@ -27,7 +27,7 @@ static void *writer_thread(void *arg)
         /* release the mutex here */
 
 
-        xtimer_usleep(100 * US_PER_MS);
+        ztimer_sleep(ZTIMER_MSEC, 100);
     }
 
     return NULL;
@@ -44,7 +44,7 @@ int main(void)
         /* safely read the content of the buffer here */
 
 
-        xtimer_usleep(200 * US_PER_MS);
+        ztimer_sleep(ZTIMER_MSEC, 200);
     }
 
     return 0;

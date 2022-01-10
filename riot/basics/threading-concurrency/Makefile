@@ -2,7 +2,7 @@ APPLICATION=thread-concurrency
 
 BOARD ?= native
 
-USEMODULE += xtimer
+USEMODULE += ztimer_msec
 
 RIOTBASE ?= $(CURDIR)/../../RIOT
 

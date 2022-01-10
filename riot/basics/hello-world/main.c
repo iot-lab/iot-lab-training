@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "xtimer.h"
+#include "ztimer.h"
 
 int main(void)
 {
-    xtimer_sleep(5);
+    ztimer_sleep(ZTIMER_SEC, 5);
     puts("Hello from RIOT!");
     return 0;
 }

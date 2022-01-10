@@ -2,7 +2,7 @@ APPLICATION = hello-world
 
 BOARD ?= native
 
-USEMODULE += xtimer
+USEMODULE += ztimer_sec
 
 RIOTBASE ?= $(CURDIR)/../../RIOT
 

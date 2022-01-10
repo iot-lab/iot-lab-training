@@ -4,7 +4,7 @@ BOARD ?= iotlab-m3
 
 USEMODULE += shell
 USEMODULE += shell_commands
-USEMODULE += xtimer
+USEMODULE += ztimer
 
 # Add the required modules here
 
