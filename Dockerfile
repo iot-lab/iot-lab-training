@@ -1,4 +1,4 @@
-FROM fitiotlab/iot-lab-jupyterlab-base
+FROM fitiotlab/iot-lab-jupyterlab-base:latest
 
 LABEL maintainer="alexandre.abadie@inria.fr"
 
