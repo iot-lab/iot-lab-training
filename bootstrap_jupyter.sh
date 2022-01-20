@@ -7,4 +7,4 @@ fi
 
 export SHELL=/bin/bash
 
-jupyter-lab --no-browser --ip 0.0.0.0 --LabApp.token=iotlab
+jupyter-lab --no-browser --ServerApp.ip 0.0.0.0 --ServerApp.token=iotlab
