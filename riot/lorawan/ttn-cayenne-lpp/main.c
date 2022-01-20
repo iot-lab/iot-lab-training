@@ -3,6 +3,10 @@
 #include "timex.h"
 #include "ztimer.h"
 
+#include "sx127x.h"
+#include "sx127x_netdev.h"
+#include "sx127x_params.h"
+
 #include "net/loramac.h"
 #include "semtech_loramac.h"
 
@@ -13,6 +17,8 @@
 
 /* TODO: Add the cayenne_lpp header here */
 
+/* Declare globally the sx127x radio driver descriptor */
+static sx127x_t sx127x;
 
 /* Declare globally the loramac descriptor */
 static semtech_loramac_t loramac;
@@ -76,6 +82,11 @@ int main(void)
         puts("Sensor continuous mode setup failed");
         return 1;
     }
+
+    /* initialize the radio driver */
+    sx127x_setup(&sx127x, &sx127x_params[0], 0);
+    loramac.netdev = &sx127x.netdev;
+    loramac.netdev->driver = &sx127x_driver;
 
     /* initialize the loramac stack */
     semtech_loramac_init(&loramac);
