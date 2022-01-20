@@ -4,12 +4,16 @@
 #include "timex.h"
 #include "ztimer.h"
 
-/* Add necessary include here */
+/* Add sx127x radio driver necessary includes here */
 
+
+/* Add loramac necessary includes here */
+
+
+/* Declare the sx127x radio driver descriptor globally here */
 
 
 /* Declare the loramac descriptor globally here */
-
 
 
 /* Device and application parameters required for OTAA activation here */
@@ -18,9 +22,12 @@
 
 int main(void)
 {
+    /* initialize the radio driver */
+
+
     /* initialize loramac stack */
 
-    
+
     /* configure the device parameters */
 
 
