@@ -45,3 +45,11 @@ Jupyter Notebooks.
 
 You can then edit the notebooks in your browser. Make sure to clear all the
 outputs before commiting your changes.
+
+## License
+
+All content - notebooks and code snippets - is licensed under the Creative commons license
+[CC-BY-ND](https://creativecommons.org/licenses/by-nd/4.0/)
+
+![CC-BY-ND](https://mirrors.creativecommons.org/presskit/buttons/80x15/png/by-nd.png)
+
