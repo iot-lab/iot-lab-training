@@ -1,111 +1,203 @@
-#include <stdlib.h>
+/*
+ * Copyright (C) 2016 Freie Universität Berlin
+ *
+ * This file is subject to the terms and conditions of the GNU Lesser General
+ * Public License v2.1. See the file LICENSE in the top level directory for more
+ * details.
+ */
+
+/**
+ * @ingroup     tests
+ * @{
+ *
+ * @file
+ * @brief       Test for the on-board LED macros
+ *
+ * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
+ *
+ * @}
+ */
+
 #include <stdio.h>
-#include <string.h>
+#include <stdint.h>
 
-#include "thread.h"
-#include "ztimer.h"
-#include "shell.h"
+#include "clk.h"
+#include "board.h"
+#include "periph_conf.h"
 
-#include "mutex.h"
+#define DELAY_SHORT         (coreclk() / 50)
+#define DELAY_LONG          (DELAY_SHORT * 4)
 
-/* Add lps331ap related include here */
-
-
-/* Add lsm303dlhc related include here */
-
-
-/* Declare the lps331ap device variable here */
-
-
-/* Declare the lsm303dlhc device variable here */
-
-
-/* Declare and initialize the lsm303dlhc thread lock here */
-
-
-/* stack memory allocated for the lsm303dlhc thread */
-static char lsm303dlhc_stack[THREAD_STACKSIZE_MAIN];
-
-static void *lsm303dlhc_thread(void *arg)
+void dumb_delay(uint32_t delay)
 {
-    (void)arg;
-
-    while (1) {
-        /* Acquire the mutex here */
-
-
-        /* Read the accelerometer/magnetometer values here */
-
-
-        /* Release the mutex here */
-
-
-        ztimer_sleep(ZTIMER_MSEC, 500);
+    for (uint32_t i = 0; i < delay; i++) {
+        __asm__("nop");
     }
-
-    return 0;
 }
-
-static void _lsm303dlhc_usage(char *cmd)
-{
-    printf("usage: %s <start|stop>\n", cmd);
-}
-
-static int lsm303dlhc_handler(int argc, char *argv[])
-{
-    if (argc < 2) {
-        _lsm303dlhc_usage(argv[0]);
-        return -1;
-    }
-
-    /* Implement the lsm303dlhc start/stop subcommands here */
-
-
-    return 0;
-}
-
-static void _lpsxxx_usage(char *cmd)
-{
-    printf("usage: %s <temperature|pressure>\n", cmd);
-}
-
-static int lpsxxx_handler(int argc, char *argv[])
-{
-    if (argc < 2) {
-        _lpsxxx_usage(argv[0]);
-        return -1;
-    }
-
-    /* Implement the lps331ap temperature/pressure subcommands here */
-
-
-    return 0;
-}
-
-static const shell_command_t commands[] = {
-    /* lsm303dlhc shell command handler */
-    { "lsm", "start/stop reading accelerometer values", lsm303dlhc_handler },
-
-    /* Add the lps331ap command description here */
-
-
-    { NULL, NULL, NULL}
-};
 
 int main(void)
 {
-    /* Initialize the lps331ap sensor here */
+    int numof = 0;
 
+    /* get the number of available LED's and turn them all off*/
+#ifdef LED0_ON
+    ++numof;
+    LED0_OFF;
+#endif
+#ifdef LED1_ON
+    ++numof;
+    LED1_OFF;
+#endif
+#ifdef LED2_ON
+    ++numof;
+    LED2_OFF;
+#endif
+#ifdef LED3_ON
+    ++numof;
+    LED3_OFF;
+#endif
+#ifdef LED4_ON
+    ++numof;
+    LED4_OFF;
+#endif
+#ifdef LED5_ON
+    ++numof;
+    LED5_OFF;
+#endif
+#ifdef LED6_ON
+    ++numof;
+    LED6_OFF;
+#endif
+#ifdef LED7_ON
+    ++numof;
+    LED7_OFF;
+#endif
 
-    /* Initialize the lsm303dlhc sensor here */
+    puts("On-board LED test\n");
+    /* cppcheck-suppress knownConditionTrueFalse
+     * (reason: board-dependent ifdefs) */
+    if (numof == 0) {
+        puts("NO LEDs AVAILABLE");
+    }
+    else {
+        printf("Available LEDs: %i\n\n", numof);
+        puts("Will now light up each LED once short and twice long in a loop");
+    }
 
-
-    thread_create(lsm303dlhc_stack, sizeof(lsm303dlhc_stack), THREAD_PRIORITY_MAIN - 1,
-                  0, lsm303dlhc_thread, NULL, "lsm303dlhc");
-
-    /* Everything is ready, let's start the shell now */
-    char line_buf[SHELL_DEFAULT_BUFSIZE];
-    shell_run(commands, line_buf, SHELL_DEFAULT_BUFSIZE);
+    while (1) {
+#ifdef LED0_ON
+        LED0_ON;
+        dumb_delay(DELAY_LONG);
+        LED0_OFF;
+        dumb_delay(DELAY_LONG);
+        LED0_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED0_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED0_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED0_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+#ifdef LED1_ON
+        LED1_ON;
+        dumb_delay(DELAY_LONG);
+        LED1_OFF;
+        dumb_delay(DELAY_LONG);
+        LED1_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED1_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED1_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED1_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+#ifdef LED2_ON
+        LED2_ON;
+        dumb_delay(DELAY_LONG);
+        LED2_OFF;
+        dumb_delay(DELAY_LONG);
+        LED2_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED2_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED2_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED2_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+#ifdef LED3_ON
+        LED3_ON;
+        dumb_delay(DELAY_LONG);
+        LED3_OFF;
+        dumb_delay(DELAY_LONG);
+        LED3_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED3_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED3_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED3_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+#ifdef LED4_ON
+        LED4_ON;
+        dumb_delay(DELAY_LONG);
+        LED4_OFF;
+        dumb_delay(DELAY_LONG);
+        LED4_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED4_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED4_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED4_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+#ifdef LED5_ON
+        LED5_ON;
+        dumb_delay(DELAY_LONG);
+        LED5_OFF;
+        dumb_delay(DELAY_LONG);
+        LED5_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED5_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED5_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED5_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+#ifdef LED6_ON
+        LED6_ON;
+        dumb_delay(DELAY_LONG);
+        LED6_OFF;
+        dumb_delay(DELAY_LONG);
+        LED6_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED6_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED6_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED6_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+#ifdef LED7_ON
+        LED7_ON;
+        dumb_delay(DELAY_LONG);
+        LED7_OFF;
+        dumb_delay(DELAY_LONG);
+        LED7_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED7_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED7_TOGGLE;
+        dumb_delay(DELAY_SHORT);
+        LED7_TOGGLE;
+        dumb_delay(DELAY_LONG);
+#endif
+    }
 
     return 0;
 }

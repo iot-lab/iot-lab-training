@@ -1,4 +1,4 @@
-APPLICATION = Projet IOT ISENP18M
+APPLICATION = Projet
 
 BOARD ?= iotlab-m3
 

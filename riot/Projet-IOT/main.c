@@ -28,10 +28,6 @@
 #include "l3g4200d.h"
 #include "l3g4200d_params.h"
 
-/* Define different Delays here */
-#define DELAY_SHORT         (coreclk() / 50)
-#define DELAY_LONG          (DELAY_SHORT * 4)
-
 /* Declare the lps331ap device variable here */
 static lpsxxx_t lpsxxx;
 
@@ -62,6 +58,12 @@ static void _isl_usage(char *cmd)
     printf("usage: %s <start>\n", cmd);
 }
 
+/* LEDS */
+static void _led_usage(char *cmd)
+{
+    printf("usage: %s <start>\n", cmd);
+}
+
 
 static int isl_handler(int argc, char *argv[])
 {
@@ -81,6 +83,34 @@ static int isl_handler(int argc, char *argv[])
 
     return 0;
 }
+
+/* LEds */
+static int led_handler(int argc, char *argv[])
+{
+    if (argc < 2) {
+        _led_usage(argv[0]);
+        return -1;
+    }
+
+    /* Implement the LED start subcommands here */
+    if (!strcmp(argv[1], "start")) {
+        printf("Allumage des LEDS\n");
+            LED0_ON;
+            LED1_ON;
+            LED2_ON;
+            LED3_ON;
+            LED4_ON;
+            LED5_ON;
+            LED6_ON;       
+            LED7_ON;
+    }
+    else {
+        _led_usage(argv[0]);
+        return -1;
+    }
+    return 0;
+}
+
 
 /* Accelerometer */
 static void *lsm303dlhc_thread(void *arg)
@@ -186,6 +216,9 @@ static const shell_command_t commands[] = {
     /* Add the isl command description here */
     { "isl", "read the isl29020 values", isl_handler },
     
+    /* Add the Leds command description here */
+    { "led", "Turn the led ON", led_handler },
+    
     /* l3g4200d shell command handler 
     { "l3g", "start/stop reading gyro data values", l3g4200d_read },
     */
@@ -194,18 +227,10 @@ static const shell_command_t commands[] = {
 };
 
 
-void dumb_delay(uint32_t delay)
-{
-    for (uint32_t i = 0; i < delay; i++) {
-        __asm__("nop");
-    }
-}
-
-
 int main(void)
 {
     
-        /* Initialize the lps331ap sensor here */
+    /* Initialize the lps331ap sensor here */
     lpsxxx_init(&lpsxxx, &lpsxxx_params[0]);
 
     /* Initialize the lsm303dlhc sensor here */
@@ -224,11 +249,6 @@ int main(void)
 
         thread_create(lsm303dlhc_stack, sizeof(lsm303dlhc_stack), THREAD_PRIORITY_MAIN - 1,
                   0, lsm303dlhc_thread, NULL, "lsm303dlhc");
-
-    /* Everything is ready, let's start the shell now */
-    char line_buf[SHELL_DEFAULT_BUFSIZE];
-    shell_run(commands, line_buf, SHELL_DEFAULT_BUFSIZE);
-    
     
     
     /* get the number of available LED's and turn them all off*/
@@ -273,123 +293,12 @@ int main(void)
     }
     else {
         printf("Available LEDs: %i\n\n", numof);
-        puts("Will now light up each LED once short and twice long in a loop");
     }
-
-    while (1) {
-#ifdef LED0_ON
-        LED0_ON;
-        dumb_delay(DELAY_LONG);
-        LED0_OFF;
-        dumb_delay(DELAY_LONG);
-        LED0_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED0_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED0_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED0_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-#ifdef LED1_ON
-        LED1_ON;
-        dumb_delay(DELAY_LONG);
-        LED1_OFF;
-        dumb_delay(DELAY_LONG);
-        LED1_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED1_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED1_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED1_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-#ifdef LED2_ON
-        LED2_ON;
-        dumb_delay(DELAY_LONG);
-        LED2_OFF;
-        dumb_delay(DELAY_LONG);
-        LED2_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED2_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED2_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED2_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-#ifdef LED3_ON
-        LED3_ON;
-        dumb_delay(DELAY_LONG);
-        LED3_OFF;
-        dumb_delay(DELAY_LONG);
-        LED3_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED3_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED3_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED3_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-#ifdef LED4_ON
-        LED4_ON;
-        dumb_delay(DELAY_LONG);
-        LED4_OFF;
-        dumb_delay(DELAY_LONG);
-        LED4_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED4_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED4_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED4_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-#ifdef LED5_ON
-        LED5_ON;
-        dumb_delay(DELAY_LONG);
-        LED5_OFF;
-        dumb_delay(DELAY_LONG);
-        LED5_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED5_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED5_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED5_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-#ifdef LED6_ON
-        LED6_ON;
-        dumb_delay(DELAY_LONG);
-        LED6_OFF;
-        dumb_delay(DELAY_LONG);
-        LED6_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED6_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED6_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED6_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-#ifdef LED7_ON
-        LED7_ON;
-        dumb_delay(DELAY_LONG);
-        LED7_OFF;
-        dumb_delay(DELAY_LONG);
-        LED7_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED7_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED7_TOGGLE;
-        dumb_delay(DELAY_SHORT);
-        LED7_TOGGLE;
-        dumb_delay(DELAY_LONG);
-#endif
-    }
-
+    
+    /* Everything is ready, let's start the shell now */
+    char line_buf[SHELL_DEFAULT_BUFSIZE];
+    shell_run(commands, line_buf, SHELL_DEFAULT_BUFSIZE);
+    
+    
     return 0;
 }
