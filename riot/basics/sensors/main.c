@@ -33,7 +33,7 @@ static void *lsm303dlhc_thread(void *arg)
     while (1) {
         /* Acquire the mutex here */
 
-
+	printf("bonjour");
         /* Read the accelerometer/magnetometer values here */
 
 
