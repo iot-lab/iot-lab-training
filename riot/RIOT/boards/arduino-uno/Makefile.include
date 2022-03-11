@@ -1,0 +1,6 @@
+# configure the terminal program
+BAUD        ?= 9600
+
+ARDUINO_UNO_BOOTLOADER ?= optiboot
+
+include $(RIOTBOARD)/common/arduino-atmega/Makefile.include

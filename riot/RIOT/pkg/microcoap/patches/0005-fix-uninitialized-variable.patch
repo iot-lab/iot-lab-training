@@ -1,0 +1,25 @@
+From 3d467db74c39df3f79cacfe661fb29d413e2db38 Mon Sep 17 00:00:00 2001
+From: Patrick Grosse <patrick.grosse@uni-muenster.de>
+Date: Sat, 25 Mar 2017 10:36:09 +0100
+Subject: [PATCH 5/6] fix uninitialized variable
+
+---
+ coap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/coap.c b/coap.c
+index 407d1d2..5006b59 100644
+--- a/coap.c
++++ b/coap.c
+@@ -295,7 +295,7 @@ int coap_build(uint8_t *buf, size_t *buflen, const coap_packet_t *pkt)
+     for (i=0;i<pkt->numopts;i++)
+     {
+         uint32_t optDelta;
+-        uint8_t len, delta = 0;
++        uint8_t len = 0, delta = 0;
+ 
+         if (((size_t)(p-buf)) > *buflen)
+              return COAP_ERR_BUFFER_TOO_SMALL;
+-- 
+2.7.4
+

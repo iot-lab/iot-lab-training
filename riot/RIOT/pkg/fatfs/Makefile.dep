@@ -1,0 +1,5 @@
+USEMODULE += fatfs_diskio_mtd
+USEMODULE += mtd
+
+# Use RTC for timestamps if available
+FEATURES_OPTIONAL += periph_rtc

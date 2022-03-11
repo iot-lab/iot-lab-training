@@ -1,0 +1,18 @@
+# custom flasher to use with the bootloader
+TEENSY_LOADER = $(RIOTTOOLS)/teensy-loader-cli/teensy_loader
+FLASHER = $(TEENSY_LOADER)
+
+FLASHFILE ?= $(HEXFILE)
+FFLAGS ?= --mcu=mk20dx256 $(FLASHFILE)
+
+ifeq ($(TEENSY_LOADER),$(FLASHER))
+  FLASHDEPS += $(TEENSY_LOADER)
+endif
+
+# define the default port depending on the host OS
+PORT_DARWIN ?= $(firstword $(sort $(wildcard /dev/tty.usbserial-*)))
+
+$(TEENSY_LOADER):
+	@echo "[INFO] teensy_loader binary not found - building it from source now"
+	CC= CFLAGS= $(MAKE) -C $(RIOTTOOLS)/teensy-loader-cli
+	@echo "[INFO] teensy_loader binary successfully build!"

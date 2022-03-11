@@ -1,0 +1,4 @@
+FEATURES_PROVIDED += periph_i2c
+FEATURES_PROVIDED += periph_spi
+
+include $(RIOTBOARD)/common/kw41z/Makefile.features

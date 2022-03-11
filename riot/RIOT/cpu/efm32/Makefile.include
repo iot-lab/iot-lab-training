@@ -1,0 +1,30 @@
+include $(RIOTCPU)/efm32/efm32-info.mk
+
+# HACK: here we would want to look into USEMODULE to include Makefile.include
+# but since Makefile.dep is still resolved after Makefile.include we can't do
+# something like `$(filter cpu_efm32%,$(USEMODULE))`. This is why we use
+# `cpu_$(CPU_FAM)` for something that is MODULE related.
+include $(RIOTCPU)/efm32/families/$(CPU_FAM)/Makefile.include
+
+ifeq (,$(EFM32_HEADER))
+  $(error Header file for $(CPU_MODEL) is missing)
+endif
+
+# the size of riotboot on the EFM32 exceeds the default value
+RIOTBOOT_LEN ?= 0x2000
+
+# the em_device.h header requires a global define with the cpu model
+CFLAGS += -D$(call uppercase_and_underscore,$(CPU_MODEL))
+
+# include EFM32 specific driver headers
+INCLUDES += -I$(RIOTCPU)/efm32/include/drivers
+
+# include cortexm_common
+LINKER_SCRIPT = cortexm.ld
+
+ROM_START_ADDR = $(EFM32_FLASH_START)
+ROM_LEN = $(EFM32_FLASH_SIZE)
+RAM_START_ADDR = $(EFM32_SRAM_START)
+RAM_LEN = $(EFM32_SRAM_SIZE)
+
+include $(RIOTMAKE)/arch/cortexm.inc.mk

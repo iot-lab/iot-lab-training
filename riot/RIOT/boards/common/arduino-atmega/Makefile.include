@@ -1,0 +1,3 @@
+INCLUDES += -I$(RIOTBOARD)/common/arduino-atmega/include
+
+include $(RIOTBOARD)/common/atmega/Makefile.include

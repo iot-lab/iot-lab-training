@@ -1,0 +1,3 @@
+FEATURES_PROVIDED += atmega_pcint1 atmega_pcint2
+
+include $(RIOTCPU)/atmega_common/Makefile.features

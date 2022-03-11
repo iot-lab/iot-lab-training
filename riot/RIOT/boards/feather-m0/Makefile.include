@@ -1,0 +1,8 @@
+# setup the flash tool used
+ifeq ($(PROGRAMMER),jlink)
+  # in case J-Link is attached to SWD pins, use a plain CPU memory model
+  JLINK_DEVICE = atsamd21
+endif
+
+# Include all definitions for flashing with bossa over USB
+include $(RIOTBOARD)/common/samdx1-arduino-bootloader/Makefile.include

@@ -1,0 +1,9 @@
+# the SmartRF06 Evaluation Board serial numbers all begin with "06EB":
+PROGRAMMER_SERIAL ?= 06EB
+
+# setup serial terminal
+# the debug UART is always the second tty with the matching serial number:
+PORT_LINUX ?= $(word 2,$(shell $(RIOTTOOLS)/usb-serial/find-tty.sh '^$(PROGRAMMER_SERIAL)'))
+PORT_DARWIN ?= $(firstword $(sort $(wildcard /dev/tty.usbserial*)))
+
+include $(RIOTBOARD)/common/cc2538/Makefile.include

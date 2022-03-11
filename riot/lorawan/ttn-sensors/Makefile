@@ -10,6 +10,7 @@ RIOTBASE ?= $(CURDIR)/../../RIOT
 # Here we add the modules that are needed
 #
 USEMODULE += ztimer_msec
+USEMODULE += hts221
 
 #
 # The application needs LoRaWAN related modules and variables:

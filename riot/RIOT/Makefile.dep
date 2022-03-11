@@ -1,0 +1,114 @@
+# include board specific application dependencies
+-include $(APPDIR)/Makefile.board.dep
+-include $(APPDIR)/Makefile.$(TOOLCHAIN).dep
+
+# include board dependencies
+-include $(BOARDDIR)/Makefile.dep
+
+# include cpu dependencies
+-include $(RIOTCPU)/$(CPU)/Makefile.dep
+
+# include external modules dependencies
+# processed before RIOT ones to be evaluated before the 'default' rules.
+-include $(EXTERNAL_MODULE_PATHS:%=%/Makefile.dep)
+
+# pull dependencies from sys and drivers
+include $(RIOTBASE)/sys/Makefile.dep
+include $(RIOTBASE)/drivers/Makefile.dep
+
+# pull Makefile.dep of each driver modules if they exist
+-include $(sort $(USEMODULE:%=$(RIOTBASE)/drivers/%/Makefile.dep))
+
+# pull dependencies from packages
+-include $(USEPKG:%=$(RIOTPKG)/%/Makefile.dep)
+
+ifneq (,$(filter mpu_stack_guard,$(USEMODULE)))
+  FEATURES_REQUIRED += cortexm_mpu
+endif
+
+ifneq (,$(filter mpu_noexec_ram,$(USEMODULE)))
+  FEATURES_REQUIRED += cortexm_mpu
+endif
+
+ifneq (,$(filter lwip_%,$(USEMODULE)))
+  USEPKG += lwip
+endif
+
+ifneq (,$(filter libfixmath-unittests,$(USEMODULE)))
+  USEPKG += libfixmath
+  USEMODULE += libfixmath
+endif
+
+ifneq (,$(filter random,$(USEMODULE)))
+  # select default prng if no prng is selected
+  ifeq (,$(filter prng_%,$(USEMODULE)))
+    USEMODULE += prng_musl_lcg
+  endif
+endif
+
+ifneq (,$(filter spiffs,$(USEMODULE)))
+  USEPKG += spiffs
+  USEMODULE += vfs
+  USEMODULE += spiffs_fs
+  USEMODULE += mtd
+endif
+
+ifneq (,$(filter littlefs,$(USEMODULE)))
+  USEPKG += littlefs
+  USEMODULE += vfs
+  USEMODULE += littlefs_fs
+  USEMODULE += mtd
+endif
+
+ifneq (,$(filter littlefs2,$(USEMODULE)))
+  USEPKG += littlefs2
+  USEMODULE += vfs
+  USEMODULE += littlefs2_fs
+  USEMODULE += mtd
+endif
+
+ifneq (,$(filter fatfs_vfs,$(USEMODULE)))
+  USEPKG += fatfs
+  USEMODULE += vfs
+endif
+
+ifneq (,$(filter nimble_%,$(USEMODULE)))
+  USEPKG += nimble
+endif
+
+ifneq (,$(filter tlsf-malloc,$(USEMODULE)))
+  USEPKG += tlsf
+endif
+
+ifneq (,$(filter tinydtls_sock_dtls, $(USEMODULE)))
+    USEPKG += tinydtls
+endif
+
+# always select gpio (until explicit dependencies are sorted out)
+FEATURES_OPTIONAL += periph_gpio
+
+# always select power management unless building the bootloader
+# pm is not needed by the bootloader and omitting it saves some ROM
+ifneq (1, $(RIOTBOOT_BUILD))
+  FEATURES_OPTIONAL += periph_pm
+endif
+
+# don't use idle thread if architecture has needed support
+FEATURES_OPTIONAL += no_idle_thread
+
+ifneq (,$(filter libstdcpp,$(FEATURES_USED)))
+  # Also use C++ if libstdc++ is used
+  USEMODULE += cpp
+  USEMODULE += libstdcpp
+endif
+
+ifneq (,$(filter cpp,$(FEATURES_USED)))
+  # Also use C++ if libstdc++ is used
+  USEMODULE += cpp
+endif
+
+ifneq (,$(filter test_utils_interactive_sync,$(USEMODULE)))
+  ifneq (,$(filter shell,$(USEMODULE)))
+    DEFAULT_MODULE += test_utils_interactive_sync_shell
+  endif
+endif

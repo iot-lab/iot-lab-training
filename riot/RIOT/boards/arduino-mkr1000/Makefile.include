@@ -1,0 +1,5 @@
+ifeq ($(PROGRAMMER),jlink)
+  MKR_JLINK_DEVICE = atsamw25
+endif
+
+include $(RIOTBOARD)/common/arduino-mkr/Makefile.include

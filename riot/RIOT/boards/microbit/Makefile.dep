@@ -1,0 +1,6 @@
+ifneq (,$(filter saul_default,$(USEMODULE)))
+  USEMODULE += mma8x5x
+endif
+
+include $(RIOTBOARD)/common/microbit/Makefile.dep
+include $(RIOTBOARD)/common/nrf51/Makefile.dep

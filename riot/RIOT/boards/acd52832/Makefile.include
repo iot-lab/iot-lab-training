@@ -1,0 +1,4 @@
+# set default port depending on operating system
+PORT_LINUX ?= /dev/ttyUSB0
+
+include $(RIOTBOARD)/common/nrf52/Makefile.include

@@ -1,0 +1,9 @@
+# Include shared STM32 headers
+INCLUDES += -I$(RIOTBOARD)/common/stm32/include
+
+# custom flasher to use with the bootloader
+PROGRAMMER ?= robotis-loader
+PROGRAMMERS_SUPPORTED += robotis-loader
+
+# Skip the space needed by the embedded bootloader
+ROM_OFFSET ?= 0x3000

@@ -1,0 +1,8 @@
+# include module specific includes
+INCLUDES += -I$(RIOTCPU)/atmega_common/include
+
+PSEUDOMODULES += atmega_pcint
+PSEUDOMODULES += atmega_pcint%
+
+# CPU depends on the avr8 common module, so include it
+include $(RIOTCPU)/avr8_common/Makefile.include

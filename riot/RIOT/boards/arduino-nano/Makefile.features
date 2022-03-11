@@ -1,0 +1,3 @@
+CPU = atmega328p
+
+include $(RIOTBOARD)/common/arduino-atmega/Makefile.features

@@ -1,0 +1,4 @@
+# include common remote includes
+INCLUDES += -I$(RIOTBOARD)/common/remote/include
+
+include $(RIOTBOARD)/common/cc2538/Makefile.include

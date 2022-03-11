@@ -1,0 +1,2 @@
+USEMODULE += hashes
+USEMODULE += crypto_aes_128

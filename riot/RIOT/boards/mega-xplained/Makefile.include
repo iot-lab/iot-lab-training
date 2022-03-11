@@ -1,0 +1,17 @@
+# Found by checking fuse settings (2048 words so 4KB)
+# https://www.microchip.com/DevelopmentTools/ProductDetails/atmega1284p-xpld
+ATMEGA_BOOTLOADER_SIZE ?= 4K
+
+# Avrdude programmer defaults to the external flasher Bus Pirate ISP.
+AVRDUDE_PROGRAMMER  ?= buspirate
+# set serial port for avrdude with buspirate
+ifeq ($(OS),Linux)
+  PROG_DEV ?= /dev/ttyUSB0
+else ifeq ($(OS),Darwin)
+  PROG_DEV ?= $(firstword $(sort $(wildcard /dev/tty.usbserial*)))
+endif
+
+# configure the terminal program
+BAUD        ?= 9600
+
+include $(RIOTBOARD)/common/atmega/Makefile.include

@@ -1,0 +1,19 @@
+CPU_MODEL = esp32-wrover
+
+# common board and CPU features
+include $(RIOTBOARD)/common/esp32/Makefile.features
+
+# additional features provided by the board
+FEATURES_PROVIDED += periph_adc
+FEATURES_PROVIDED += periph_dac
+FEATURES_PROVIDED += periph_i2c
+FEATURES_PROVIDED += periph_pwm
+FEATURES_PROVIDED += periph_spi
+
+FEATURES_PROVIDED += arduino
+
+# This configuration enables modules that are only available when using Kconfig
+# module modelling
+ifeq (1, $(TEST_KCONFIG))
+  KCONFIG_ADD_CONFIG += $(BOARDDIR)/esp32-wemos-lolin-d32-pro.config
+endif
