@@ -33,10 +33,26 @@ static hts221_t hts221; /* The HTS221 device descriptor */
 static cayenne_lpp_t lpp;
 
 //les AppKey et Tutti Canti
-static const uint8_t appeui[LORAMAC_APPEUI_LEN] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-static const uint8_t deveui[LORAMAC_DEVEUI_LEN] = { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x04, 0xD7, 0xD8 };
-static const uint8_t appkey[LORAMAC_APPKEY_LEN] = { 0x1C, 0x7A, 0x21, 0x39, 0x8A, 0xDF, 0x48, 0x1E, 0x18, 0x06, 0x4B, 0x13, 0xA5, 0x56, 0x48, 0xBD };
+//Definition des clé de connection TTN
+static const uint8_t appeui[NB_CARTE][LORAMAC_APPEUI_LEN] = 
+{
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+};
+static const uint8_t deveui[NB_CARTE][LORAMAC_DEVEUI_LEN] = 
+{
+    { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x04, 0xD7, 0xD8 },  
+    { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x04, 0xDD, 0x4C }
+};
+static const uint8_t appkey[NB_CARTE][LORAMAC_APPKEY_LEN]= 
+{
+    { 0x1C, 0x7A, 0x21, 0x39, 0x8A, 0xDF, 0x48, 0x1E, 0x18, 0x06, 0x4B, 0x13, 0xA5, 0x56, 0x48, 0xBD }, 
+    { 0x8B, 0x06, 0x21, 0x7C, 0xFC, 0x0F, 0x5A, 0x2B, 0x92, 0xD5, 0xEF, 0xF1, 0xAA, 0xD4, 0xCC, 0x42 }
+};
 
+
+//variable globale
+bool arrosage = false;
 
 //tread de reception
 static void *_recv(void *arg)
@@ -49,6 +65,15 @@ static void *_recv(void *arg)
         loramac.rx_data.payload[loramac.rx_data.payload_len] = 0;
         printf("Data received: %s, port: %d\n",
                (char *)loramac.rx_data.payload, loramac.rx_data.port);
+        
+        if(strcmp((char *)loramac.rx_data.payload, "start"))
+        {
+            arrosage = true;
+        }
+        else
+        {
+            arrosage = false;
+        }
     }
     return NULL;
 }
@@ -56,8 +81,6 @@ static void *_recv(void *arg)
 
 int main(void)
 {
-    printf("dingo l'ami de mickey");
-	
     //Initialisation capteur
     if (hts221_init(&hts221, &hts221_params[0]) != HTS221_OK) {
         puts("Sensor initialization failed");
@@ -81,9 +104,9 @@ int main(void)
     semtech_loramac_init(&loramac);
     
     /* configure the device parameters */
-    semtech_loramac_set_deveui(&loramac, deveui);
-    semtech_loramac_set_appeui(&loramac, appeui);
-    semtech_loramac_set_appkey(&loramac, appkey);
+    semtech_loramac_set_deveui(&loramac, deveui[0]);
+    semtech_loramac_set_appeui(&loramac, appeui[0]);
+    semtech_loramac_set_appkey(&loramac, appkey[0]);
 
     /* change datarate to DR5 (SF7/BW125kHz) */
     semtech_loramac_set_dr(&loramac, 5);
@@ -103,19 +126,24 @@ int main(void)
         //faire les mesures
         uint16_t humidity = 0;
         int16_t temperature = 0;
-        if (hts221_read_humidity(&hts221, &humidity) != HTS221_OK) {
+        if (hts221_read_humidity(&hts221, &humidity) != HTS221_OK)
+        {
             puts("Cannot read humidity!");
         }
-        if (hts221_read_temperature(&hts221, &temperature) != HTS221_OK) {
+        if (hts221_read_temperature(&hts221, &temperature) != HTS221_OK)
+        {
             puts("Cannot read temperature!");
         }
 
-        /*char message[64];
-        sprintf(message, "H: %d.%d%%, T:%d.%dC",
-                (humidity / 10), (humidity % 10),
-                (temperature / 10), (temperature % 10));
-        printf("Sending message '%s'\n", message);*/
-		
+        if (humidity < 350)
+        {
+            arrosage = true;
+        }
+        else
+        {
+            arrosage = false;
+        }
+        
 		//preparation des donnée cayenne
 		cayenne_lpp_add_temperature(&lpp, 0, (float)temperature / 10);
 		cayenne_lpp_add_relative_humidity(&lpp, 1, (float)humidity / 10);
@@ -127,16 +155,19 @@ int main(void)
 		if (ret != SEMTECH_LORAMAC_TX_DONE) {
 			printf("Cannot send lpp message, ret code: %d\n", ret);
 		}
-        /*if (semtech_loramac_send(&loramac,
-                                 (uint8_t *)message, strlen(message)) != SEMTECH_LORAMAC_TX_DONE) {
-            printf("Cannot send message '%s'\n", message);
-        }
-        else {
-            printf("Message '%s' sent\n", message);
-        }*/
 		
 		cayenne_lpp_reset(&lpp);
         //delay 30 sec
+        
+        if (arrosage)
+        {
+            printf("    J'arrose \n");
+        }
+        else
+        {
+            printf("    Je n'arrose pas \n");
+        }
+        
         ztimer_sleep(ZTIMER_MSEC, 30 * MS_PER_SEC);
     }
 
