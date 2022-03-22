@@ -44,7 +44,7 @@ Jupyter Notebooks.
 3. Connect to JupyterLab at http://localhost:8888/?token=iotlab
 
 You can then edit the notebooks in your browser. Make sure to clear all the
-outputs before commiting your changes.
+outputs before commiting your changes
 
 ## License
 
