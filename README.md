@@ -1,3 +1,13 @@
+## Notes for ITII ISEN IOT Project 
+Les 2 dossiers correspondant au projet se trouvent dans les dossiers suivants :
+riot / Projet_IOT
+riot / Projet_LED
+
+Projet_IOT correspond au code pour la partie GateWay
+Projet_LED correspond au code pour la partie Devices (ferme de carte qui allument leurs LEDs)
+Executer dans chacun des dossiers le fichier PROJET_LED.ipynb et PROJET_IOT.ipynb
+
+
 ## Welcome to the IoT-LAB training resources
 
 ### Description
