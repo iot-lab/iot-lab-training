@@ -1,7 +1,6 @@
 ## Notes for ITII ISEN IOT Project 
 Les 2 dossiers correspondant au projet se trouvent dans les dossiers suivants :
-riot / Projet_IOT
-riot / Projet_LED
+riot/Projet_IOT et riot/Projet_LED
 
 Projet_IOT correspond au code pour la partie GateWay
 
