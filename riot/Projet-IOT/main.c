@@ -8,7 +8,21 @@
 #include "shell.h"
 #include "led.h"
 
+/* Add sx127x radio driver necessary includes here */
+//#include "sx127x.h"
+//#include "sx127x_netdev.h"
+//#include "sx127x_params.h"
+
+/* Add loramac necessary includes here */
+//#include "net/loramac.h"     /* core loramac definitions */
+//#include "semtech_loramac.h" /* package API */
+//#include "hts221.h"
+//#include "hts221_params.h"
+
 #include "board.h"
+#include "board_common.h"
+//#include "gpio_params.h"
+
 #include "periph_conf.h"
 
 #include "mutex.h"
@@ -28,29 +42,13 @@
 #include "l3g4200d.h"
 #include "l3g4200d_params.h"
 
-/* Declare the lps331ap device variable here */
-static lpsxxx_t lpsxxx;
-
-/* Declare the lsm303dlhc device variable here */
-static lsm303dlhc_t lsm303dlhc;
 
 /* Declare the isl & 13g device variable here */
 static isl29020_t isl29020;
 
+
 //static l3g4200d_t l3g4200d;
 //static l3g4200d_data_t acc_data;
-
-/* Declare and initialize the lsm303dlhc thread lock here */
-static mutex_t lsm_lock = MUTEX_INIT_LOCKED;
-
-
-/* stack memory allocated for the lsm303dlhc thread */
-static char lsm303dlhc_stack[THREAD_STACKSIZE_MAIN];
-
-
-/* Beginning of functions declaration */
-/* ********* */
-
 
 /* LUXmeter */
 static void _isl_usage(char *cmd)
@@ -58,12 +56,18 @@ static void _isl_usage(char *cmd)
     printf("usage: %s <start>\n", cmd);
 }
 
-/* LEDS */
-static void _led_usage(char *cmd)
-{
-    printf("usage: %s <start>\n", cmd);
-}
+/* Declare the sx127x radio driver descriptor globally here */
+//static sx127x_t sx127x;      /* The sx127x radio driver descriptor */
 
+/* Declare the loramac descriptor globally here */
+//static semtech_loramac_t loramac;  /* The loramac stack descriptor */
+
+
+
+/* Device and application parameters required for OTAA activation here */
+//static const uint8_t appeui[LORAMAC_APPEUI_LEN] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+//static const uint8_t deveui[LORAMAC_DEVEUI_LEN] = { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x04, 0xC6, 0xFA };
+//static const uint8_t appkey[LORAMAC_APPKEY_LEN] = { 0x8B, 0x9A, 0xDC, 0xF0, 0x5C, 0x14, 0x52, 0xDD, 0xDA, 0xBE, 0xD9, 0xE7, 0x95, 0x62, 0x06, 0x1E };
 
 static int isl_handler(int argc, char *argv[])
 {
@@ -75,6 +79,7 @@ static int isl_handler(int argc, char *argv[])
     /* Implement the isl start subcommands here */
     if (!strcmp(argv[1], "start")) {
         printf("Light value: %5i LUX\n", isl29020_read(&isl29020));
+        
     }
     else {
         _isl_usage(argv[0]);
@@ -84,140 +89,18 @@ static int isl_handler(int argc, char *argv[])
     return 0;
 }
 
-/* LEds */
-static int led_handler(int argc, char *argv[])
-{
-    if (argc < 2) {
-        _led_usage(argv[0]);
-        return -1;
-    }
 
-    /* Implement the LED start subcommands here */
-    if (!strcmp(argv[1], "start")) {
-        printf("Allumage des LEDS\n");
-            LED0_ON;
-            LED1_ON;
-            LED2_ON;
-            LED3_ON;
-            LED4_ON;
-            LED5_ON;
-            LED6_ON;       
-            LED7_ON;
-    }
-    else {
-        _led_usage(argv[0]);
-        return -1;
-    }
-    return 0;
-}
-
-
-/* Accelerometer */
-static void *lsm303dlhc_thread(void *arg)
-{
-    (void)arg;
-
-    while (1) {
-        /* Acquire the mutex here */
-        mutex_lock(&lsm_lock);
-
-        /* Read the accelerometer/magnetometer values here */
-        lsm303dlhc_3d_data_t mag_value;
-        lsm303dlhc_3d_data_t acc_value;
-        lsm303dlhc_read_acc(&lsm303dlhc, &acc_value);
-        printf("Accelerometer x: %i y: %i z: %i\n",
-        acc_value.x_axis, acc_value.y_axis, acc_value.z_axis);
-        lsm303dlhc_read_mag(&lsm303dlhc, &mag_value);
-        printf("Magnetometer x: %i y: %i z: %i\n",
-        mag_value.x_axis, mag_value.y_axis, mag_value.z_axis);
-
-        /* Release the mutex here */
-        mutex_unlock(&lsm_lock);
-
-        ztimer_sleep(ZTIMER_MSEC, 500);
-    }
-
-    return 0;
-}
-
-
-static void _lsm303dlhc_usage(char *cmd)
-{
-    printf("usage: %s <start|stop>\n", cmd);
-}
-
-static int lsm303dlhc_handler(int argc, char *argv[])
-{
-    if (argc < 2) {
-        _lsm303dlhc_usage(argv[0]);
-        return -1;
-    }
-
-    /* Implement the lsm303dlhc start/stop subcommands here */
-    if (!strcmp(argv[1], "start")) {
-        mutex_unlock(&lsm_lock);
-    }
-    else if (!strcmp(argv[1], "stop")) {
-        mutex_trylock(&lsm_lock);
-    }
-    else {
-        _lsm303dlhc_usage(argv[0]);
-        return -1;
-    }
-
-    return 0;
-}
-
-
-
-
-/* Thermometer & Barometer */
-
-static void _lpsxxx_usage(char *cmd)
-{
-    printf("usage: %s <temperature|pressure>\n", cmd);
-}
-
-static int lpsxxx_handler(int argc, char *argv[])
-{
-    if (argc < 2) {
-        _lpsxxx_usage(argv[0]);
-        return -1;
-    }
-
-    /* Implement the lps331ap temperature/pressure subcommands here */
-    if (!strcmp(argv[1], "temperature")) {
-        int16_t temp = 0;
-        lpsxxx_read_temp(&lpsxxx, &temp);
-        printf("Temperature: %i.%u°C\n", (temp / 100), (temp % 100));
-    }
-    else if (!strcmp(argv[1], "pressure")) {
-        uint16_t pres = 0;
-        lpsxxx_read_pres(&lpsxxx, &pres);
-        printf("Pressure: %uhPa\n", pres);
-    }
-    else {
-        _lpsxxx_usage(argv[0]);
-        return -1;
-    }
-
-    return 0;
-}
+/* Beginning of functions declaration */
+/* ********* */
 
 /* Commandes SHELL */
 
 static const shell_command_t commands[] = {
-    /* lsm303dlhc shell command handler */
-    { "lsm", "start/stop reading accelerometer values", lsm303dlhc_handler },
 
-    /* Add the lps331ap command description here */
-    { "lps", "read the lps331ap values", lpsxxx_handler },
     
     /* Add the isl command description here */
     { "isl", "read the isl29020 values", isl_handler },
-    
-    /* Add the Leds command description here */
-    { "led", "Turn the led ON", led_handler },
+
     
     /* l3g4200d shell command handler 
     { "l3g", "start/stop reading gyro data values", l3g4200d_read },
@@ -227,14 +110,34 @@ static const shell_command_t commands[] = {
 };
 
 
+
 int main(void)
 {
     
-    /* Initialize the lps331ap sensor here */
-    lpsxxx_init(&lpsxxx, &lpsxxx_params[0]);
+    /* initialize the radio driver */
+    //sx127x_setup(&sx127x, &sx127x_params[0], 0);
+    //loramac.netdev = &sx127x.netdev;
+    //loramac.netdev->driver = &sx127x_driver;
 
-    /* Initialize the lsm303dlhc sensor here */
-    lsm303dlhc_init(&lsm303dlhc, &lsm303dlhc_params[0]);
+    /* initialize loramac stack */
+    //semtech_loramac_init(&loramac);
+
+    /* configure the device parameters */
+    //semtech_loramac_set_deveui(&loramac, deveui);
+    //semtech_loramac_set_appeui(&loramac, appeui);
+    //semtech_loramac_set_appkey(&loramac, appkey);
+
+    /* change datarate to DR5 (SF7/BW125kHz) */
+    //semtech_loramac_set_dr(&loramac, 5);
+    
+    /* start the OTAA join procedure */
+    //if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
+      //  puts("Join procedure failed");
+      //  return 1;
+    //}
+    puts("Join procedure succeeded");
+    
+
 
     /* Initialize the isl29020_init sensor here */
     if (isl29020_init(&isl29020, &isl29020_params[0]) == 0) {
@@ -245,59 +148,37 @@ int main(void)
         return 1;
     }
     
-    int numof = 0;
 
-        thread_create(lsm303dlhc_stack, sizeof(lsm303dlhc_stack), THREAD_PRIORITY_MAIN - 1,
-                  0, lsm303dlhc_thread, NULL, "lsm303dlhc");
-    
-    
-    /* get the number of available LED's and turn them all off*/
-#ifdef LED0_ON
-    ++numof;
-    LED0_OFF;
-#endif
-#ifdef LED1_ON
-    ++numof;
-    LED1_OFF;
-#endif
-#ifdef LED2_ON
-    ++numof;
-    LED2_OFF;
-#endif
-#ifdef LED3_ON
-    ++numof;
-    LED3_OFF;
-#endif
-#ifdef LED4_ON
-    ++numof;
-    LED4_OFF;
-#endif
-#ifdef LED5_ON
-    ++numof;
-    LED5_OFF;
-#endif
-#ifdef LED6_ON
-    ++numof;
-    LED6_OFF;
-#endif
-#ifdef LED7_ON
-    ++numof;
-    LED7_OFF;
-#endif
+    uint16_t luxmetre = 0;
 
-    puts("On-board LED test\n");
-    /* cppcheck-suppress knownConditionTrueFalse
-     * (reason: board-dependent ifdefs) */
-    if (numof == 0) {
-        puts("NO LEDs AVAILABLE");
-    }
-    else {
-        printf("Available LEDs: %i\n\n", numof);
-    }
+    //while (1) {
+        
+        /* do some measurements */
+        //printf("Light value: %5i LUX\n", isl29020_read(&isl29020));
+        luxmetre=isl29020_read(&isl29020);
     
-    /* Everything is ready, let's start the shell now */
+
+        char message[64];
+        sprintf(message, "LUX: %d",luxmetre);
+        printf("Sending message '%s'\n", message);
+
+        /* send the message here */
+        //if (semtech_loramac_send(&loramac,
+        //                         (uint8_t *)message, strlen(message)) != SEMTECH_LORAMAC_TX_DONE) {
+        //    printf("Cannot send message '%s'\n", message);
+        //}
+        //else {
+        //    printf("Message '%s' sent\n", message);
+        //}
+
+        /* wait 20 seconds between each message */
+        ztimer_sleep(ZTIMER_MSEC, 3 * MS_PER_SEC);
+        
+            /* Everything is ready, let's start the shell now */
     char line_buf[SHELL_DEFAULT_BUFSIZE];
     shell_run(commands, line_buf, SHELL_DEFAULT_BUFSIZE);
+        
+    //}
     
     
     return 0;

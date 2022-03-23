@@ -75,6 +75,7 @@ static int isl_handler(int argc, char *argv[])
     /* Implement the isl start subcommands here */
     if (!strcmp(argv[1], "start")) {
         printf("Light value: %5i LUX\n", isl29020_read(&isl29020));
+        
     }
     else {
         _isl_usage(argv[0]);
