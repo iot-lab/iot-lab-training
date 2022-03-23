@@ -4,9 +4,5 @@ iotlab-experiment wait --timeout 30 --cancel-on-timeout
 
 iotlab-experiment --jmespath="items[*].network_address | sort(@)" get --nodes
 
-echo "prouuut"
-echo $HOHO
-echo "rooote"
-
-make IOTLAB_NODES=$HOHO iotlab-flash
+make IOTLAB_NODES=$1 iotlab-flash
 

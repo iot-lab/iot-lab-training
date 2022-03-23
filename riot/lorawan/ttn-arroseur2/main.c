@@ -1,8 +1,3 @@
-//mosquitto_sub -h eu1.cloud.thethings.network --cafile riot/lorawan/ttn-mqtt/isrgrootx1.pem -p 8883 -t 'v3/+/devices/+/up' -u 'picsou@ttn' -P 'NNSXS.3BDUTAKTSCGAFTTEKWSOGLIMZO24M44GVMHYNSY.6GBXYOV26OQFXALPU3ZIUJZF2WJL7GPI7POUB3Z5ITUFPKZL5MCA' -v
-//mosquitto_pub -h eu1.cloud.thethings.network --cafile riot/lorawan/ttn-mqtt/isrgrootx1.pem -p 8883 -t 'v3/picsou@ttn/devices/arroseur/down/push' -u 'picsou@ttn' -P 'NNSXS.3BDUTAKTSCGAFTTEKWSOGLIMZO24M44GVMHYNSY.6GBXYOV26OQFXALPU3ZIUJZF2WJL7GPI7POUB3Z5ITUFPKZL5MCA' -m '{"downlinks":[{"f_port": 42,"frm_payload":"U2FsdXQgbGVzIGVuZmFudCBjJ2VzdCBkYWRkeSBjaG9jb2xhdA==","priority": "NORMAL"}]}'
-
-
-
 #include <string.h>
 #include "board.h"
 #include "timex.h"
@@ -52,6 +47,7 @@ static const uint8_t appkey[NB_CARTE][LORAMAC_APPKEY_LEN]=
 
 
 //variable globale
+bool automatik = true;
 bool arrosage = false;
 
 //tread de reception
@@ -61,6 +57,7 @@ static void *_recv(void *arg)
     (void)arg;
     while (1) {
         /* blocks until a message is received */
+        //strcpy((char *)loramac.rx_data.payload, "");
         semtech_loramac_recv(&loramac);
         loramac.rx_data.payload[loramac.rx_data.payload_len] = 0;
         printf("Data received: %s, port: %d\n",
@@ -68,11 +65,20 @@ static void *_recv(void *arg)
         
         if(strcmp((char *)loramac.rx_data.payload, "start"))
         {
+            printf("on me dit de passer en manuel (start)");
+            automatik = false;
             arrosage = true;
         }
-        else
+        if(strcmp((char *)loramac.rx_data.payload, "stop"))
         {
+            printf("on me dit de passer en manuel (stop)");
+            automatik = false;
             arrosage = false;
+        }
+        if(strcmp((char *)loramac.rx_data.payload, "auto"))
+        {
+            printf("on me dit de repasser en auto");
+            automatik = true;
         }
     }
     return NULL;
@@ -134,19 +140,28 @@ int main(void)
         {
             puts("Cannot read temperature!");
         }
-
-        if (humidity < 350)
+        
+        if( automatik )
         {
-            arrosage = true;
+            printf("    Je suis en mode automatique \n");
+            if (humidity < 350)
+            {
+                arrosage = true;
+            }
+            else
+            {
+                arrosage = false;
+            }
         }
         else
         {
-            arrosage = false;
+            printf("    Je suis en mode manuel \n");
         }
         
 		//preparation des donnée cayenne
 		cayenne_lpp_add_temperature(&lpp, 0, (float)temperature / 10);
 		cayenne_lpp_add_relative_humidity(&lpp, 1, (float)humidity / 10);
+        //cayenne_lpp_add_output(&lpp, 1, automatik);
 
         //envoit du message
 		printf("Sending LPP data\n");
@@ -161,11 +176,11 @@ int main(void)
         
         if (arrosage)
         {
-            printf("    J'arrose \n");
+            printf("        J'arrose \n");
         }
         else
         {
-            printf("    Je n'arrose pas \n");
+            printf("        Je n'arrose pas \n");
         }
         
         ztimer_sleep(ZTIMER_MSEC, 30 * MS_PER_SEC);
