@@ -16,6 +16,13 @@ USEMODULE += isl29020
 USEMODULE += l3g4200d
 CFLAGS=-DAUTO_INIT_LED0
 
+# Default to using ethos for providing the uplink when not on native
+UPLINK ?= ethos
+
+# Check if the selected Uplink is valid
+ifeq (,$(filter ethos slip cdc-ecm wifi ethernet,$(UPLINK)))
+  $(error Supported uplinks are `ethos`, `slip`, `cdc-ecm`, `ethernet` and `wifi`)
+endif
 
 # Include packages that pull up and auto-init the link layer.
 # NOTE: 6LoWPAN will be included if IEEE802.15.4 devices are present
@@ -77,6 +84,21 @@ endif
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
 
+# When using a regular network uplink we should use DHCPv6
+ifneq (,$(filter cdc-ecm wifi ethernet,$(UPLINK)))
+  USE_DHCPV6 ?= 1
+else
+  USE_DHCPV6 ?= 0
+endif
+
+ifeq (1,$(USE_DHCPV6))
+  # include DHCPv6 client for 6LoWPAN border router
+  USEMODULE += gnrc_dhcpv6_client_6lbr
+else
+  # include UHCP client
+  USEMODULE += gnrc_uhcpc
+endif
+
 # Ethos/native TAP interface and UHCP prefix can be configured from make command
 TAP ?= tap0
 ifeq (1,$(USE_DHCPV6))
@@ -89,10 +111,78 @@ IPV6_PREFIX ?= 2001:db8::/64
 endif
 
 
+# MODULE DEPENDENT CONFIGURATION IMPORT
+# =====================================
+# use ethos (ethernet over serial) or SLIP (serial-line IP) for network
+# communication and stdio over UART, but not on native, as native has a tap
+# interface towards the host.
+ifeq (,$(filter native,$(BOARD)))
+  ifeq (slip,$(UPLINK))
+    # SLIP baudrate and UART device can be configured from make command
+    SLIP_BAUDRATE ?= 115200
+    include $(CURDIR)/../RIOT/examples/gnrc_border_router/Makefile.slip.conf
+  else ifeq (ethos,$(UPLINK))
+    # ethos baudrate can be configured from make command
+    ETHOS_BAUDRATE ?= 115200
+    include $(CURDIR)/../RIOT/examples/gnrc_border_router/Makefile.ethos.conf
+  else ifeq (cdc-ecm,$(UPLINK))
+    include $(CURDIR)/../RIOT/examples/gnrc_border_router/Makefile.cdc-ecm.conf
+  else ifeq (wifi,$(UPLINK))
+    # SSID and Password need to be configured
+    include $(CURDIR)/../RIOT/examples/gnrc_border_router/Makefile.wifi.conf
+  endif
+else
+  # The number of native (emulated) ZigBee/6LoWPAN devices
+  ZEP_DEVICES ?= 1
+  include $(CURDIR)/../RIOT/examples/gnrc_border_router/Makefile.native.conf
+endif
+
+# As there is an 'Kconfig' we want to explicitly disable Kconfig by setting
+# the variable to empty
+SHOULD_RUN_KCONFIG ?=
+
+
 RIOTBASE ?= $(CURDIR)/../RIOT
 
 include $(RIOTBASE)/Makefile.include
 include $(RIOTBASE)/dist/testbed-support/Makefile.iotlab
+
+
+# Compile-time configuration for DHCPv6 client (needs to come after
+# Makefile.include as this might come from Kconfig)
+ifeq (1,$(USE_DHCPV6))
+  ifndef CONFIG_GNRC_DHCPV6_CLIENT_6LBR_STATIC_ROUTE
+    ifeq (1,$(STATIC_ROUTES))
+      CFLAGS += -DCONFIG_GNRC_DHCPV6_CLIENT_6LBR_STATIC_ROUTE=1
+      # CONFIG_GNRC_DHCPV6_CLIENT_6LBR_STATIC_ROUTE=1 requires one more address
+      # for `fe80::2`.
+      CFLAGS += -DCONFIG_GNRC_NETIF_IPV6_ADDRS_NUMOF=3
+    endif
+  endif
+endif
+
+
+.PHONY: host-tools
+
+host-tools:
+	$(Q)env -u CC -u CFLAGS $(MAKE) -C $(RIOTTOOLS)
+
+# define native specific targets to only run UHCP daemon when required
+ifneq (,$(filter native,$(BOARD)))
+ifneq (1,$(USE_DHCPV6))
+.PHONY: uhcpd-daemon
+
+uhcpd-daemon: host-tools
+	$(RIOTTOOLS)/uhcpd/bin/uhcpd $(TAP) $(IPV6_PREFIX) &
+endif
+endif
+
+ifeq (slip,$(UPLINK))
+sliptty:
+	$(Q)env -u CC -u CFLAGS $(MAKE) -C $(RIOTTOOLS)/sliptty
+endif
+
+
 
 # Set a custom channel if needed
 include $(RIOTMAKE)/default-radio-settings.inc.mk
