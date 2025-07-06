@@ -1,6 +1,7 @@
 .sudo_as_admin_successful
 .ipynb_checkpoints
 .vagrant
+.DS_Store
 bin/
 build/
 *.iotlab
