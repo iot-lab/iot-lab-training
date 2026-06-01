@@ -4,7 +4,7 @@ LABEL maintainer="alexandre.abadie@inria.fr"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        add-apt-key \
+        gnupg \
         && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

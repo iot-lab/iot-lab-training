@@ -1,5 +1,6 @@
 .sudo_as_admin_successful
 .ipynb_checkpoints
+*.ipynb
 .vagrant
 .DS_Store
 bin/
@@ -9,7 +10,8 @@ build/
 .iotlabrc
 .ssh/
 .ipython/
-.jupyter/
+.jupyter/lab/workspaces/
+.jupyter/migrated
 .local/
 *.oml
 .cache/

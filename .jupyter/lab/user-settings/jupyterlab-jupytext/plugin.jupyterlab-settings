@@ -1,0 +1,12 @@
+{
+    "auto:percent": true,
+    "auto:light": false,
+    "auto:hydrogen": false,
+    "auto:nomarker": false,
+    "py:marimo": false,
+    "md:myst": true,
+    "md": true,
+    "Rmd": false,
+    "qmd": false,
+    "NOTE": null
+}

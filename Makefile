@@ -1,4 +1,4 @@
-.PHONY: all run-docker
+.PHONY: all build-docker run-docker
 
 # Try to retrieve the IoT-LAB login from the host setup
 IOTLAB_AUTH ?= $(HOME)/.iotlabrc
@@ -8,6 +8,9 @@ all:
 	@echo
 	@echo "Use 'make run-docker' to start the Jupyterlab session in Docker"
 	@echo
+
+build-docker:
+	docker build -t fitiotlab/iot-lab-training .
 
 run-docker:
 	docker run --rm -it \

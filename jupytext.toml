@@ -1,0 +1,4 @@
+# Jupytext configuration
+# Notebooks are stored as plain Markdown files (.md).
+# JupyterLab opens them as interactive notebooks via the jupytext extension.
+formats = "md"

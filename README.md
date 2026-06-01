@@ -8,7 +8,7 @@ the IoT-LAB testbed.
 
 ### Getting started
 
-We recommend that you follow the `start.ipynb` notebook to learn how to use
+We recommend that you follow the `start.md` notebook to learn how to use
 Jupyter Notebooks.
 
 - Notebooks in **riot** will let you discover the [RIOT](https://riot-os.org)
@@ -33,7 +33,13 @@ Jupyter Notebooks.
   $ git clone --recursive https://github.com/iot-lab/iot-lab-training
   ```
 
-2. Start a local Jupyterlab server using [Docker](https://www.docker.com/)
+2. Build the Jupyterlab Docker image
+
+  ```
+  $ make build-docker
+  ```
+
+3. Start a local Jupyterlab server using [Docker](https://www.docker.com/)
   (only tested on Linux and OSX)
 
   ```
@@ -41,7 +47,7 @@ Jupyter Notebooks.
   $ IOTLAB_LOGIN=<login> make run-docker
   ```
 
-3. Connect to JupyterLab at http://localhost:8888/?token=iotlab
+4. Connect to JupyterLab at http://localhost:8888/?token=iotlab
 
 You can then edit the notebooks in your browser. Make sure to clear all the
 outputs before commiting your changes.
