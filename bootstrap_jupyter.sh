@@ -8,4 +8,6 @@ fi
 export SHELL=/bin/bash
 
 jupyter labextension enable jupyterlab_jupytext
+jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
+
 jupyter-lab --no-browser --ServerApp.ip 0.0.0.0 --IdentityProvider.token=iotlab
