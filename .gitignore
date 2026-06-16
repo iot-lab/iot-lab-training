@@ -12,6 +12,7 @@ build/
 .ipython/
 .jupyter/lab/workspaces/
 .jupyter/migrated
+.jupyter/serverconfig/
 .local/
 *.oml
 .cache/
