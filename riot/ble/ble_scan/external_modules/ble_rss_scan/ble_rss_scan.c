@@ -2,6 +2,7 @@
 
 #include "ztimer.h"
 
+#include "nimble_riot.h"
 #include "nimble_scanner.h"
 #include "nimble_scanlist.h"
 #include "net/bluetil/ad.h"
@@ -13,6 +14,7 @@
 
 #include "ble_rss_scan.h"
 
+#define DEFAULT_SCAN_INTERVAL_MS    30
 
 // local helpers
 static void _print_buffer(const uint8_t *addr, uint8_t size, bool reverse);
@@ -23,20 +25,17 @@ bool ble_rss_scan_init(void)
 {
     /* We want Nimble to scan 'full time', so we set the
      * window equal the interval */
-    struct ble_gap_disc_params scan_params = {
-        .itvl = BLE_GAP_LIM_DISC_SCAN_INT,
-        .window = BLE_GAP_LIM_DISC_SCAN_WINDOW,
-        .filter_policy = 0,     /* don't use */
-        .limited = 0,           /* no limited discovery */
-        .passive = 0,           /* no passive scanning */
-        .filter_duplicates = 0, /* no duplicate filtering */
+    nimble_scanner_cfg_t scan_params = {
+        .itvl_ms = DEFAULT_SCAN_INTERVAL_MS,
+        .win_ms = DEFAULT_SCAN_INTERVAL_MS,
+        .flags = NIMBLE_SCANNER_PHY_1M,
     };
 
     /* initialize the nimble scanner */
     nimble_scanlist_init();
-    int ret = nimble_scanner_init(&scan_params, nimble_scanlist_update);
+    nimble_scanner_init(&scan_params, nimble_scanlist_update);
 
-    return ret == NIMBLE_SCANNER_OK;
+    return true;
 }
 
 
@@ -70,16 +69,21 @@ static struct {
 void ble_rss_autoadv_start(int32_t adv_duration_ms)
 {
     int nimlble_ret;
-    static struct  ble_gap_adv_params adv_params;
     const char * device_name = ble_svc_gap_device_name();
 
-    nimble_autoadv_init();
-    // setup Advertisement
-    adv_params.conn_mode = BLE_GAP_CONN_MODE_UND;
-    adv_params.disc_mode = BLE_GAP_DISC_MODE_GEN;
-    nimble_autoadv_set_ble_gap_adv_params(&adv_params);
-    _adv_duration_ms = adv_duration_ms; 
-    nimble_auto_adv_set_adv_duration(_adv_duration_ms);
+    nimble_autoadv_cfg_t cfg = {
+        .adv_duration_ms = BLE_HS_FOREVER,
+        .adv_itvl_ms = adv_duration_ms,
+        .flags = NIMBLE_AUTOADV_FLAG_CONNECTABLE | NIMBLE_AUTOADV_FLAG_LEGACY | \
+                 NIMBLE_AUTOADV_FLAG_SCANNABLE,
+        .channel_map = 0,
+        .filter_policy = 0,
+        .own_addr_type = nimble_riot_own_addr_type,
+        .phy = NIMBLE_PHY_1M,
+        .tx_power = 0,
+    };
+
+    nimble_autoadv_init(&cfg);
     /* setup advertised data to contain:
      - Device name 
      - current tx power
@@ -96,7 +100,7 @@ void ble_rss_autoadv_start(int32_t adv_duration_ms)
     }
 
     // start 
-    nimble_autoadv_start();
+    nimble_autoadv_start(NULL);
 }
 
 void ble_rss_autoadv_stop(void)

@@ -94,7 +94,7 @@ Set environment variables for further use by modifying the values in the cell be
 Compile the RIOT `gnrc_networking` example:
 
 ```python
-%env APP_DIR=../../RIOT/examples/gnrc_networking
+%env APP_DIR = ../../RIOT/examples/networking/gnrc/networking
 !make -C $APP_DIR BOARD=iotlab-m3 DEFAULT_CHANNEL=$CHANNEL DEFAULT_PAN_ID=$PAN_ID
 ```
 
@@ -151,7 +151,7 @@ Compile and flash border router firmware to this node. Replace `<id>` with the r
 
 ```python
 %env BR_ID = <id>
-%env APP_DIR = ../../RIOT/examples/gnrc_border_router
+%env APP_DIR = ../../RIOT/examples/networking/gnrc/border_router
 !make -C $APP_DIR ETHOS_BAUDRATE=500000 BOARD=iotlab-m3 DEFAULT_CHANNEL=$CHANNEL DEFAULT_PAN_ID=$PAN_ID IOTLAB_NODE=m3-$BR_ID.$SITE.iot-lab.info flash
 ```
 

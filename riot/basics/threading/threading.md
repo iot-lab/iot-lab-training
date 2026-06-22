@@ -28,7 +28,6 @@ In the [Makefile](Makefile) file, add the following:
 
 ```mk
 USEMODULE += shell
-USEMODULE += shell_commands
 USEMODULE += ps
 ```
 

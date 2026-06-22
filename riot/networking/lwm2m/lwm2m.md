@@ -85,7 +85,7 @@ A border router (BR) is a routing device to connect a wireless sensor network to
 
 ```python
 %env BR_ID = <id>
-%env APP_DIR = ../../RIOT/examples/gnrc_border_router
+%env APP_DIR = ../../RIOT/examples/networking/gnrc/border_router
 !make -C $APP_DIR ETHOS_BAUDRATE=500000 BOARD=iotlab-m3 DEFAULT_CHANNEL=$CHANNEL DEFAULT_PAN_ID=$PAN_ID
 ```
 

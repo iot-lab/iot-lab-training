@@ -3,7 +3,6 @@ APPLICATION=threading-ipc
 BOARD ?= native
 
 USEMODULE += shell
-USEMODULE += shell_commands
 USEMODULE += ps
 
 RIOTBASE ?= $(CURDIR)/../../RIOT

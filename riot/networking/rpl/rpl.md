@@ -44,7 +44,7 @@ You will use the `gnrc_networking` example from RIOT.
 Let's define an environment variable to shorten the command lines.
 
 ```python
-%env APP_DIR = ../../RIOT/examples/gnrc_networking
+%env APP_DIR = ../../RIOT/examples/networking/gnrc/networking
 ```
 
 1. Compile the example:

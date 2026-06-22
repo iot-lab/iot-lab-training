@@ -28,11 +28,10 @@ USEMODULE += od
 USEMODULE += fmt
 # Add also the shell, some shell commands
 USEMODULE += shell
-USEMODULE += shell_commands
 USEMODULE += ps
 
 # Import lps331ap driver module
-
+USEMODULE += lps331ap
 
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the

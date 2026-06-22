@@ -52,11 +52,11 @@ The source code of the examples is available on the [GitHub repository of RIOT](
 5. Build and flash the application on the devices:
 
 ```python
-!make BOARD=iotlab-m3 -C ../../RIOT/examples/dtls-echo
+!make BOARD=iotlab-m3 -C ../../RIOT/examples/networking/dtls/dtls-echo
 ```
 
 ```python
-!iotlab-node --flash ../../RIOT/examples/dtls-echo/bin/iotlab-m3/dtls_echo.bin
+!iotlab-node --flash ../../RIOT/examples/networking/dtls/dtls-echo/bin/iotlab-m3/dtls_echo.bin
 ```
 
 ### Interact with the 2 IoT-LAB M3 devices

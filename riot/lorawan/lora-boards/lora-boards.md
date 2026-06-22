@@ -59,7 +59,7 @@ In this notebook, you will perform remote basic interactions on the LoRa boards 
 Let's start with the usual `hello_world` sample application provided by the RIOT source code.
 
 ```python
-!make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C ../../RIOT/examples/hello-world flash
+!make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C ../../RIOT/examples/basic/hello-world flash
 ```
 
 <!-- #region -->
@@ -78,13 +78,13 @@ We will build and flash the [examples/default](https://github.com/RIOT-OS/RIOT/t
 1. First build and flash the application:
 
 ```python
-!make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C ../../RIOT/examples/default flash
+!make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C ../../RIOT/examples/basic/default flash
 ```
 
 2. Open a terminal: `File > New > Terminal` and connect to the shell using the following command:
 
 <!-- #raw -->
-make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C riot/RIOT/examples/default term
+make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C riot/RIOT/examples/basic/default term
 <!-- #endraw -->
 
 Press `Enter` in the terminal and the shell should respond with the prompt character `>`.
@@ -128,7 +128,7 @@ By default, the radio is configured with a 125kHz bandwidth and a spreading fact
 On IoT-LAB, you can also remotely reset a board by the using the `reset` target with `make`. This can be useful in case of the crash of the application to restart it in a stable configuration:
 
 ```python
-!make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C ../../RIOT/examples/default reset
+!make BOARD=b-l072z-lrwan1 IOTLAB_NODE=auto -C ../../RIOT/examples/basic/default reset
 ```
 
 Check the terminal where you played with the shell, the application has rebooted.
