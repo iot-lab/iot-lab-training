@@ -35,8 +35,8 @@ Just execute the following cell with `Ctrl+Enter` keyboard shortcut:
 # Commit the current state
 !git -c user.name='Jupyter Labs' -c user.email='labs@iot-lab.info' commit -am "Training snapshot from $(date +"%Y%m%d-%H%M%S")"
 
-# Switch back to master
-!git checkout master
+# Switch back to main
+!git checkout main
 
 # Pull the latest version of the training and update the submodules
 !git pull --recurse-submodules
