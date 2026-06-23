@@ -26,15 +26,13 @@
 #include "fmt.h"
 /* Include lpsxxx headers */
 
-
 /* Declate lpsxxx_t sensor variable (globally) */
 
 /* Declare _value variable (globally) */
 
-
 static ssize_t _encode_link(const coap_resource_t *resource, char *buf,
                             size_t maxlen, coap_link_encoder_ctx_t *context);
-static ssize_t _riot_board_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx);
+static ssize_t _riot_board_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx);
 /* Declare cpu handler */
 
 /* Declare temperature handler */
@@ -50,10 +48,9 @@ static const coap_resource_t _resources[] = {
     /* Add temperature resource */
 
     /* Add value resource */
-
 };
 
-static ssize_t _riot_board_handler(coap_pkt_t *pdu, uint8_t *buf, size_t len, void *ctx)
+static ssize_t _riot_board_handler(coap_pkt_t *pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx)
 {
     (void)ctx;
     gcoap_resp_init(pdu, buf, len, COAP_CODE_CONTENT);
@@ -71,7 +68,7 @@ static ssize_t _riot_board_handler(coap_pkt_t *pdu, uint8_t *buf, size_t len, vo
     }
 }
 
-static ssize_t _riot_cpu_handler(coap_pkt_t *pdu, uint8_t *buf, size_t len, void *ctx)
+static ssize_t _riot_cpu_handler(coap_pkt_t *pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx)
 {
     (void)ctx;
 
@@ -79,8 +76,7 @@ static ssize_t _riot_cpu_handler(coap_pkt_t *pdu, uint8_t *buf, size_t len, void
 
 }
 
-static ssize_t _temperature_handler(coap_pkt_t *pdu, uint8_t *buf, 
-                                         size_t len, void *ctx)
+static ssize_t _temperature_handler(coap_pkt_t *pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx)
 {
     (void)ctx;
 
@@ -88,7 +84,7 @@ static ssize_t _temperature_handler(coap_pkt_t *pdu, uint8_t *buf,
 
 }
 
-static ssize_t _value_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx)
+static ssize_t _value_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx)
 {
     (void)ctx;
 
@@ -99,6 +95,7 @@ static ssize_t _value_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *c
 static gcoap_listener_t _listener = {
     &_resources[0],
     ARRAY_SIZE(_resources),
+    GCOAP_SOCKET_TYPE_UDP,
     _encode_link,
     NULL,
     NULL
@@ -133,7 +130,6 @@ int main(void)
 {
     /* Initialize and enable the lps331ap device */
 
-    
     /* for the thread running the shell */
     msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
     gcoap_cli_init();

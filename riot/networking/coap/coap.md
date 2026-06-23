@@ -36,7 +36,7 @@ With the client you will learn how to discover CoAP server resources and request
 * Declare the cpu handler
     
 ```c
-static ssize_t _riot_cpu_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx);
+static ssize_t _riot_cpu_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx);
 ```
 
 * Implement the cpu handler
@@ -83,12 +83,13 @@ static lpsxxx_t sensor;
 * Declare the temperature handler
 
 ```c
-static ssize_t _temperature_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx);
+static ssize_t _temperature_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx);
 ```
 
 * Implement the temperature handler
 
 ```c
+    /* Implement temperature GET handler */
     gcoap_resp_init(pdu, buf, len, COAP_CODE_CONTENT);
     coap_opt_add_format(pdu, COAP_FORMAT_TEXT);
     size_t resp_len = coap_opt_finish(pdu, COAP_OPT_FINISH_PAYLOAD);
@@ -128,13 +129,13 @@ static uint16_t _value = 0;
 * Declare the value handler
 
 ```c
-static ssize_t _value_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx);
+static ssize_t _value_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, coap_request_ctx_t *ctx);
 ```
 
 * Implement the value handler
 
 ```c
-/* read coap method type in packet */
+    /* Implement value GET|PUT|POST handler */
     unsigned method_flag = coap_method2flag(coap_get_code_detail(pdu));
     switch(method_flag) {
         case COAP_GET:
