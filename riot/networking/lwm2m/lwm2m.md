@@ -327,8 +327,7 @@ static void *_temp_read_thread(void *arg)
     (void)arg;
     int16_t temp;
     lwm2m_uri_t uri;
-    uri.flag = LWM2M_URI_FLAG_OBJECT_ID | LWM2M_URI_FLAG_INSTANCE_ID |
-               LWM2M_URI_FLAG_RESOURCE_ID;
+    LWM2M_URI_RESET(&uri);
     uri.objectId = LWM2M_TEMP_OBJECT_ID;
     uri.instanceId = temp_instance->shortID;
     uri.resourceId = LWM2M_TEMP_RES_SENSOR_VALUE;

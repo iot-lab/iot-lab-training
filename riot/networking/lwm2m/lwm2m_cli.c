@@ -26,32 +26,27 @@
 #include "lwm2m_client_objects.h"
 #include "lwm2m_platform.h"
 
-/* Include lpsxxx headers */
+#include "objects/device.h"
+#include "objects/security.h"
 
+/* Include lpsxxx headers */
 
 /* Include temperature object headers */
 
-
 /* Declare lpsxxx_t sensor variable (globally) */
-
 
 /* Define number of LwM2M objects */
 #define OBJ_COUNT (3)
 
-
 /* Declare LwM2M temperature object instance */
 
-
 /* Define temperature sensor read interval (seconds) */
-
 
 /* Define temperature sensor reader thread priority.
  * main = 7 < LwM2M client = 6 < radio at86rf2xx = 2 
  */
 
-
 /* Declare thread stack size. */
-
 
 
 uint8_t connected = 0;
@@ -65,22 +60,37 @@ static lwm2m_client_data_t client_data;
  */
 
 
-
 void lwm2m_cli_init(void)
 {
     /* this call is needed before creating any objects */
     lwm2m_client_init(&client_data);
 
     /* add objects that will be registered */
-    obj_list[0] = lwm2m_client_get_security_object(&client_data);
-    obj_list[1] = lwm2m_client_get_server_object(&client_data);
-    obj_list[2] = lwm2m_client_get_device_object(&client_data);
+    obj_list[0] = lwm2m_object_security_init(&client_data);
+    obj_list[1] = lwm2m_client_get_server_object(&client_data,
+                                                 CONFIG_LWM2M_SERVER_SHORT_ID);
+    obj_list[2] = lwm2m_object_device_init(&client_data);
 
     /* add temperature object */
 
-
     if (!obj_list[0] || !obj_list[1] || !obj_list[2]) {
         puts("Could not create mandatory objects");
+        return;
+    }
+
+    /* create the security object instance, connecting to the server in
+     * unsecured (NoSec) mode */
+    lwm2m_obj_security_args_t security_args = {
+        .server_id = CONFIG_LWM2M_SERVER_SHORT_ID,
+        .server_uri = CONFIG_LWM2M_SERVER_URI,
+        .security_mode = LWM2M_SECURITY_MODE_NONE,
+        .is_bootstrap = false,
+        .client_hold_off_time = 5,
+        .bootstrap_account_timeout = 0
+    };
+
+    if (lwm2m_object_security_instance_create(&security_args, 0) < 0) {
+        puts("Could not instantiate the security object");
     }
 }
 
@@ -97,12 +107,9 @@ int lwm2m_cli_cmd(int argc, char **argv)
 
             /* Initialize and enable the lps331ap device */
 
-
             /* Get temperature object instance */
 
-
             /* Create temperature sensor reader thread */
-
 
         }
         return 0;

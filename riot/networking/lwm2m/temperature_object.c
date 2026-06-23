@@ -15,9 +15,11 @@ static const char *_static_resources[] = {
     "Cel",
 };
 
-static uint8_t _read(uint16_t instance_id, int *num_dataP,
-                     lwm2m_data_t **data_arrayP, lwm2m_object_t *objectP)
+static uint8_t _read(lwm2m_context_t *contextP, uint16_t instance_id,
+                     int *num_dataP, lwm2m_data_t **data_arrayP,
+                     lwm2m_object_t *objectP)
 {
+    (void)contextP;
     lwm2m_temp_instance_t *instance;
     instance = (lwm2m_temp_instance_t *)lwm2m_list_find(objectP->instanceList,
                                                                  instance_id);
@@ -55,9 +57,11 @@ static uint8_t _read(uint16_t instance_id, int *num_dataP,
     return COAP_205_CONTENT;
 }
 
-static uint8_t _discover(uint16_t instance_id, int *num_dataP,
-                         lwm2m_data_t **data_arrayP, lwm2m_object_t *objectP)
+static uint8_t _discover(lwm2m_context_t *contextP, uint16_t instance_id,
+                         int *num_dataP, lwm2m_data_t **data_arrayP,
+                         lwm2m_object_t *objectP)
 {
+    (void)contextP;
     (void)instance_id;
     (void)objectP;
     if (*num_dataP == 0) {
@@ -85,18 +89,23 @@ static uint8_t _discover(uint16_t instance_id, int *num_dataP,
 }
 
 
-static uint8_t _write(uint16_t instance_id, int num_data,
-                      lwm2m_data_t *data_arrayP, lwm2m_object_t *objectP)
+static uint8_t _write(lwm2m_context_t *contextP, uint16_t instance_id,
+                      int num_data, lwm2m_data_t *data_arrayP,
+                      lwm2m_object_t *objectP, lwm2m_write_type_t write_type)
 {
+    (void)contextP;
     (void)instance_id;
     (void)num_data;
     (void)data_arrayP;
     (void)objectP;
+    (void)write_type;
     return COAP_405_METHOD_NOT_ALLOWED;
 }
 
-static uint8_t _delete(uint16_t instance_id, lwm2m_object_t *objectP)
+static uint8_t _delete(lwm2m_context_t *contextP, uint16_t instance_id,
+                       lwm2m_object_t *objectP)
 {
+    (void)contextP;
     lwm2m_temp_instance_t *instance;
     /* try to remote the instance from the list */
     objectP->instanceList = lwm2m_list_remove(objectP->instanceList, instance_id,
@@ -110,9 +119,11 @@ static uint8_t _delete(uint16_t instance_id, lwm2m_object_t *objectP)
     return COAP_202_DELETED;
 }
 
-static uint8_t _create(uint16_t instance_id, int num_data,
-                       lwm2m_data_t *data_arrayP, lwm2m_object_t *objectP)
+static uint8_t _create(lwm2m_context_t *contextP, uint16_t instance_id,
+                       int num_data, lwm2m_data_t *data_arrayP,
+                       lwm2m_object_t *objectP)
 {
+    (void)contextP;
     (void)instance_id;
     (void)num_data;
     (void)data_arrayP;
@@ -120,9 +131,11 @@ static uint8_t _create(uint16_t instance_id, int num_data,
     return COAP_405_METHOD_NOT_ALLOWED;
 }
 
-static uint8_t _execute(uint16_t instance_id, uint16_t resource_id,
-                        uint8_t *buffer, int length, lwm2m_object_t *objectP)
+static uint8_t _execute(lwm2m_context_t *contextP, uint16_t instance_id,
+                        uint16_t resource_id, uint8_t *buffer, int length,
+                        lwm2m_object_t *objectP)
 {
+    (void)contextP;
     (void)instance_id;
     (void)resource_id;
     (void)buffer;

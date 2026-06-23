@@ -18,7 +18,6 @@ USEMODULE += gnrc_sock_udp
 USEMODULE += gnrc_icmpv6_echo
 # Add also the shell, some shell commands
 USEMODULE += shell
-USEMODULE += shell_commands
 USEMODULE += ps
 USEMODULE += ztimer_msec
 
@@ -36,6 +35,10 @@ SERVER_ADDR ?= fd00:dead:beef::1
 ifneq (,$(SERVER_ADDR))
   CFLAGS += -DCONFIG_LWM2M_SERVER_URI=\"coap://[$(SERVER_ADDR)]\"
 endif
+
+# Specify the numeric short ID identifying the LwM2M server
+SERVER_SHORT_ID ?= 1
+CFLAGS += -DCONFIG_LWM2M_SERVER_SHORT_ID=$(SERVER_SHORT_ID)
 
 # Specify the device name
 DEVICE_NAME ?= testRIOTDevice
