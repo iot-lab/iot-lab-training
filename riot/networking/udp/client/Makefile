@@ -11,7 +11,7 @@ SERVER_ADDR ?= fe80::1
 USEMODULE += ztimer_msec
 
 # Import radio driver module
-USEMODULE += gnrc_netdev_default
+USEMODULE += netdev_default
 USEMODULE += auto_init_gnrc_netif
 
 # Import network modules

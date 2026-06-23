@@ -6,12 +6,10 @@ RIOTBASE ?= $(CURDIR)/../../../RIOT
 
 SERVER_PORT ?= 8888
 
-# include this for printing IP addresses
-USEMODULE += shell_commands
 USEMODULE += ztimer_msec
 
 # Import radio driver module
-USEMODULE += gnrc_netdev_default
+USEMODULE += netdev_default
 USEMODULE += auto_init_gnrc_netif
 
 # Import network modules here

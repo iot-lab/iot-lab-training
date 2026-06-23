@@ -5,10 +5,7 @@
 #include "timex.h"
 #include "ztimer.h"
 
-#include "shell.h"
-
-/* import "ifconfig" shell command, used for printing addresses */
-extern int _gnrc_netif_config(int argc, char **argv);
+#include "net/netif.h"
 
 static char server_buffer[128];
 
@@ -17,7 +14,7 @@ int main(void)
     /* print network addresses */
     ztimer_sleep(ZTIMER_MSEC, 5 * MS_PER_SEC);
     puts("Configured network interfaces:");
-    _gnrc_netif_config(0, NULL);
+    netifs_print_ipv6("\n");
 
     /* Create the socket */
 

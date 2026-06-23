@@ -10,7 +10,7 @@ SERVER_PORT ?= 8888
 USEMODULE += ztimer_msec
 
 # Import radio driver module
-USEMODULE += gnrc_netdev_default
+USEMODULE += netdev_default
 USEMODULE += auto_init_gnrc_netif
 
 # Import network modules
@@ -19,9 +19,6 @@ USEMODULE += sock_udp
 
 # Import posix sockets
 
-
-# include this for printing IP addresses
-USEMODULE += shell_commands
 
 DEVELHELP ?= 1
 
