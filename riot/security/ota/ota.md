@@ -73,9 +73,13 @@ As a first step, we propose you to test the basic firmware update mechanism only
 
 5. Provision the device with the updatable application
 
-To provision the device, e.g to flash a binary that contains both the bootloader and the application for the first slot (*slot0*), RIOT provides the `riotboot/flash-combined-slot0` target. Let's use it with IoT-LAB to provision the IoT-LAB
+To provision the device, e.g to flash a binary that contains both the bootloader and the application for the first slot (*slot0*), RIOT provides the `riotboot/flash-combined-slot0` target. Let's use it with IoT-LAB to provision the IoT-LAB.
+
+Generate the elliptic curves key use to sign the SUIT manifest, build and flash the RIOT firmware:
 
 ```python
+!mkdir -p ~/.local/share/RIOT/keys
+!openssl genpkey -algorithm ed25519 -out ~/.local/share/RIOT/keys/default.pem
 !make ETHOS_BAUDRATE=500000 IOTLAB_NODE=auto flash
 ```
 

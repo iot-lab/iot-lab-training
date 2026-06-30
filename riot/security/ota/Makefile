@@ -39,6 +39,7 @@ QUIET ?= 1
 #
 
 USEMODULE += suit suit_transport_coap suit_storage_flashwrite
+USEMODULE += nanocoap_server_auto_init
 
 # Display a progress bar during firmware download
 USEMODULE += progress_bar
