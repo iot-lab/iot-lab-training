@@ -280,7 +280,7 @@ All generated files are located in `/home/user/iot-lab-training/riot/security/ot
 Let's copy them to firmware updates location on the SSH frontend. Replace `<site>` with the correct value.
 
 ```python
-!scp bin/iotlab-m3/*.bin $IOTLAB_LOGIN@$SITE.iot-lab.info:~/ota/fw/iotlab-m3/.
+!scp bin/iotlab-m3/suit_files/*.bin $IOTLAB_LOGIN@$SITE.iot-lab.info:~/ota/fw/iotlab-m3/.
 ```
 
 Now it is time to download this update. The RIOT shell provides the `suit` command that initiates the SUIT procedure from the url of the update manifest.
@@ -290,7 +290,7 @@ On our CoAP server, the SUIT manifest of the latest version can be downloaded at
 In the RIOT shell available via `ethos`, trigger the firmware update (replace `<udp_port>` with the UDP port configured in your network and make sure to adapt the IPv6 address depending on the IoT-LAB site you are currently using):
 
 <!-- #raw -->
-> suit coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/suit_update-riot.suit_signed.latest.bin
+> suit coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/riot.suit.latest.bin
 <!-- #endraw -->
 
 If everything succeeds, the RIOT application performs several steps:
@@ -304,10 +304,10 @@ If everything succeeds, the RIOT application performs several steps:
 Here is the expected output of the update trigger:
 
 <!-- #raw -->
-> suit coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/suit_update-riot.suit_signed.latest.bin
-suit coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/suit_update-riot.suit_signed.latest.bin
+> suit coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/riot.suit.latest.bin
+suit coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/riot.suit.latest.bin
 suit_coap: trigger received
-suit_coap: downloading "coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/suit_update-riot.suit_signed.latest.bin"
+suit_coap: downloading "coap://[2001:660:5307:30ff::5]:<udp_port>/fw/iotlab-m3/riot.suit.latest.bin"
 > suit_coap: got manifest with size 521
 suit: verifying manifest signature
 suit: validated manifest version
