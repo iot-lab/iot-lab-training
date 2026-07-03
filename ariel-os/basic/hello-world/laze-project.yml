@@ -1,0 +1,7 @@
+imports:
+  - path: ../../ariel-os
+    dldir: ariel-os
+    symlink: true
+
+apps:
+  - name: hello-world-iotlab

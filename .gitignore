@@ -21,3 +21,4 @@ build/
 .npm/
 .cargo/
 .rustup/
+*.elf

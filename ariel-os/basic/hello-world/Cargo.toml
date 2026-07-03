@@ -1,0 +1,18 @@
+[package]
+name = "hello-world-iotlab"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "hello-world-iotlab"
+path = "main.rs"
+
+[dependencies]
+ariel-os = { path = "build/imports/ariel-os/src/ariel-os", features = ["time"] }
+ariel-os-boards = { path = "build/imports/ariel-os/src/ariel-os-boards" }
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+  'cfg(context, values(any()))',
+] }
