@@ -25,6 +25,12 @@ RUN curl -L -o /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/down
     && rm /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu
 
+# Keep a pristine copy of the Rust toolchain outside of /home/jovyan: when a
+# volume is mounted over /home/jovyan at runtime, the entrypoint restores the
+# toolchain from this skeleton into the mounted home.
+RUN mkdir -p /opt/rust-skel && \
+    cp -a /home/jovyan/.cargo /home/jovyan/.rustup /opt/rust-skel/
+
 ADD bootstrap_jupyter.sh /bootstrap_jupyter.sh
 RUN chmod +x /bootstrap_jupyter.sh
 
