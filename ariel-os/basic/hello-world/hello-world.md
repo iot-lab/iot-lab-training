@@ -77,12 +77,6 @@ By default, Ariel OS sends the log messages to the debug channel (RTT), which re
 
 The generated firmware is the ELF file produced by cargo, located at `build/bin/nrf52840dk/cargo/thumbv7em-none-eabihf/release/hello-world-iotlab`.
 
-The IoT-LAB flashing tools detect the firmware format from the file extension, so copy the firmware to a file with the `.elf` extension:
-
-```python
-!cp build/bin/nrf52840dk/cargo/thumbv7em-none-eabihf/release/hello-world-iotlab hello-world-iotlab.elf
-```
-
 ### Submit an experiment on IoT-LAB
 
 The nrf52840dk boards are hosted on the Saclay site.
@@ -129,7 +123,7 @@ ssh $IOTLAB_LOGIN@saclay.iot-lab.info
 3. Keep the terminal open and flash the firmware on the node:
 
 ```python
-!iotlab-node --flash hello-world-iotlab.elf
+!iotlab-node --flash build/bin/nrf52840dk/cargo/thumbv7em-none-eabihf/release/hello-world-iotlab
 ```
 
 The node is reset after flashing and the application starts: after five seconds, the "Hello from Ariel OS!" message is displayed in the serial console.
