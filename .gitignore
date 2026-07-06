@@ -19,6 +19,5 @@ build/
 .node_repl_history
 .config/
 .npm/
-.cargo/
 .rustup/
 *.elf
